@@ -4,8 +4,8 @@
 import os
 import sys
 import re
-from networkx.algorithms import cluster
-from networkx.algorithms.tree.recognition import is_tree
+# from networkx.algorithms import cluster
+# from networkx.algorithms.tree.recognition import is_tree
 
 pPath = os.path.split(os.path.realpath(__file__))[0]
 sys.path.append(pPath)
@@ -26,7 +26,7 @@ from Bio.PDB.MMCIFParser import MMCIFParser
 from Bio.PDB.DSSP import DSSP
 from Bio.PDB.ResidueDepth import ResidueDepth
 from Bio.PDB.HSExposure import HSExposureCA, HSExposureCB
-from Bio.PDB.PDBList import PDBList
+# from Bio.PDB.PDBList import PDBList
 from sklearn.cluster import (
     KMeans,
     AffinityPropagation,
@@ -8728,7 +8728,7 @@ class iDNA(Sequence):
             else:
                 NA = "ACDEFGHIKLMNPQRSTVWY"
 
-            if upto == True:
+            if upto:
                 tmp_header = ["Sample", "label"]
                 for tmpK in range(1, k + 1):
                     for kmer in itertools.product(NA, repeat=tmpK):
@@ -8741,7 +8741,7 @@ class iDNA(Sequence):
                     for tmpK in range(1, k + 1):
                         kmers = self.kmerArray(sequence, tmpK)
                         count.update(kmers)
-                        if normalized == True:
+                        if normalized:
                             for key in count:
                                 if len(key) == tmpK:
                                     count[key] = count[key] / len(kmers)
@@ -8763,7 +8763,7 @@ class iDNA(Sequence):
                     kmers = self.kmerArray(sequence, k)
                     count = Counter()
                     count.update(kmers)
-                    if normalized == True:
+                    if normalized:
                         for key in count:
                             count[key] = count[key] / len(kmers)
                     code = [name, label]
@@ -8924,7 +8924,7 @@ class iDNA(Sequence):
             header = ["SampleName", "label"]
             NA = "ACGT"
 
-            if upto == True:
+            if upto:
                 for tmpK in range(1, k + 1):
                     tmpHeader = []
                     for kmer in itertools.product(NA, repeat=tmpK):
@@ -8945,7 +8945,7 @@ class iDNA(Sequence):
                             if kmers[j] in myDict:
                                 kmers[j] = myDict[kmers[j]]
                         count.update(kmers)
-                        if normalized == True:
+                        if normalized:
                             for key in count:
                                 if len(key) == tmpK:
                                     count[key] = count[key] / len(kmers)
@@ -8976,7 +8976,7 @@ class iDNA(Sequence):
                             kmers[j] = myDict[kmers[j]]
                     count = Counter()
                     count.update(kmers)
-                    if normalized == True:
+                    if normalized:
                         for key in count:
                             count[key] = count[key] / len(kmers)
                     code = [name, label]
@@ -10838,7 +10838,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 ## Auto covariance
                 for p in myPropertyName:
@@ -11005,7 +11005,7 @@ class iDNA(Sequence):
                 header.append("PseDNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
@@ -11045,7 +11045,7 @@ class iDNA(Sequence):
                 header.append("PCPseDNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
@@ -11087,7 +11087,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array(
@@ -11128,7 +11128,7 @@ class iDNA(Sequence):
 
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array_type2(
@@ -11168,7 +11168,7 @@ class iDNA(Sequence):
                 header.append("SCPseTNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array_type2(
@@ -11214,7 +11214,7 @@ class iDNA(Sequence):
                 header.append("PseKNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 kmerFreauency = self.get_kmer_frequency(sequence, kmer)
                 thetaArray = self.get_theta_array(
@@ -11316,7 +11316,7 @@ class iDNA(Sequence):
 
             for i in fastas:
                 if i[3] == "testing":
-                    name, sequence, label = i[0], i[1], i[2]
+                    name, sequence, _ = i[0], i[1], i[2]
                     code = [name]
                     for j in range(len(sequence) - 2):
                         if re.search("-", sequence[j : j + 3]):
@@ -11408,7 +11408,7 @@ class iDNA(Sequence):
 
             for i in fastas:
                 if i[3] == "testing":
-                    name, sequence, label = i[0], i[1], i[2]
+                    name, sequence, _ = i[0], i[1], i[2]
                     code = [name]
                     for j in range(len(sequence) - 2):
                         if re.search("-", sequence[j : j + 3]):
@@ -11531,14 +11531,14 @@ class iDNA(Sequence):
             # calculate pair distance
             distance_dict = {}
             for i in range(len(self.fasta_list)):
-                name_seq1, sequence_1, label_1, usage_1 = (
+                name_seq1, sequence_1, _, usage_1 = (
                     self.fasta_list[i][0],
                     self.fasta_list[i][1],
                     self.fasta_list[i][2],
                     self.fasta_list[i][3],
                 )
                 for j in range(i + 1, len(self.fasta_list)):
-                    name_seq2, sequence_2, label_2, usage_2 = (
+                    name_seq2, sequence_2, _, usage_2 = (
                         self.fasta_list[j][0],
                         self.fasta_list[j][1],
                         self.fasta_list[j][2],
@@ -12700,7 +12700,7 @@ class iRNA(Sequence):
             if not self.is_equal:
                 self.error_msg = "ANF descriptor need fasta sequence with equal length."
                 return False
-            AA = "ACGT"
+            # AA = "ACGT"
             encodings = []
             header = ["SampleName"]
             for i in range(1, len(self.fasta_list[0][1]) + 1):
@@ -15137,7 +15137,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, _, _ = i[0], i[1], i[2]
                 code = [name]
                 tmp_distance_list = []
                 for j in range(len(training_data)):
@@ -16157,7 +16157,7 @@ class iStructure(object):
 
     def save_descriptor(self, data, file_name):
         try:
-            if not data is None:
+            if data is not None:
                 if file_name.endswith(".tsv"):
                     np.savetxt(file_name, data.values[:, 1:], fmt="%s", delimiter="\t")
                     return True
@@ -16631,7 +16631,7 @@ class iLigand:
                 for fp in self.fps:
                     coder = eval(fp)
                     code = coder(mol, **kwargs)
-                    if type(code) == list or type(code) == np.ndarray:
+                    if type(code) is list or type(code) is np.ndarray:
                         for j, c in enumerate(code):
                             df.loc[i, fp + str(j)] = c
                     else:
@@ -16746,7 +16746,7 @@ class iAnalysis:
     # cluster methods
     def kmeans(self, nclusters=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 cluster_res = KMeans(n_clusters=nclusters).fit_predict(
                     self.dataframe.values
                 )
@@ -16765,7 +16765,7 @@ class iAnalysis:
 
     def MiniBatchKMeans(self, nclusters=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 cluster_res = MiniBatchKMeans(n_clusters=nclusters).fit_predict(
                     self.dataframe.values
                 )
@@ -16784,7 +16784,7 @@ class iAnalysis:
 
     def GM(self, nclusters=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 cluster_res = GaussianMixture(n_components=nclusters).fit_predict(
                     self.dataframe.values
                 )
@@ -16803,7 +16803,7 @@ class iAnalysis:
 
     def Agglomerative(self, nclusters=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 cluster_res = AgglomerativeClustering(n_clusters=nclusters).fit_predict(
                     self.dataframe.values
                 )
@@ -16822,7 +16822,7 @@ class iAnalysis:
 
     def Spectral(self, nclusters=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 cluster_res = SpectralClustering(n_clusters=nclusters).fit_predict(
                     self.dataframe.values
                 )
@@ -16841,7 +16841,7 @@ class iAnalysis:
 
     def MCL(self, expand=2.0, inflate=2.0, multiply=2.0, max_loop=1000):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 cluster_res = MarkvCluster(
                     self.dataframe.values,
                     int(expand),
@@ -16864,7 +16864,7 @@ class iAnalysis:
 
     def hcluster(self):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 disMat = sch.distance.pdist(self.dataframe.values, "euclidean")
                 Z = sch.linkage(disMat, method="average")
                 cluster_res = sch.fcluster(Z, 1, "inconsistent")
@@ -16883,7 +16883,7 @@ class iAnalysis:
 
     def APC(self):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 cluster_res = AffinityPropagation().fit_predict(self.dataframe.values)
                 self.cluster_result = pd.DataFrame(
                     cluster_res, index=self.dataframe.index, columns=["cluster"]
@@ -16900,7 +16900,7 @@ class iAnalysis:
 
     def meanshift(self):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 bandwidth = estimate_bandwidth(self.dataframe)
                 try:
                     cluster_res = MeanShift(
@@ -16923,7 +16923,7 @@ class iAnalysis:
 
     def DBSCAN(self):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 data = StandardScaler().fit_transform(self.dataframe.values)
                 cluster_res = DBSCAN().fit_predict(data)
                 self.cluster_result = pd.DataFrame(
@@ -16942,7 +16942,7 @@ class iAnalysis:
     # dimensionality reduction
     def t_sne(self, n_components=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 if n_components >= self.dataframe.shape[1]:
                     self.error_msg = "The reduced dimension number is out of range."
                     return None, False
@@ -16960,7 +16960,7 @@ class iAnalysis:
 
     def PCA(self, n_components=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 if n_components >= self.dataframe.shape[1]:
                     self.error_msg = "The reduced dimension number is out of range."
                     return None, False
@@ -16977,7 +16977,7 @@ class iAnalysis:
 
     def LDA(self, n_components=2):
         try:
-            if not self.dataframe is None:
+            if self.dataframe is not None:
                 if n_components >= self.dataframe.shape[1]:
                     self.error_msg = "The reduced dimension number is out of range."
                     return None, False
@@ -17053,17 +17053,17 @@ class iAnalysis:
             return False
 
     def cluster_to_csv(self, file="cluster_result.csv"):
-        if not self.cluster_result is None:
+        if self.cluster_result is not None:
             self.cluster_result.to_csv(file, index=True, header=True)
 
     def dimension_to_csv(self, file="dimension_reduction_result.csv"):
-        if not self.dimension_reduction_result is None:
+        if self.dimension_reduction_result is not None:
             np.savetxt(file, self.dimension_reduction_result, fmt="%f", delimiter=",")
 
     def normalization_to_csv(
         self, file="feature_normalization_result.csv", header=False, index=False
     ):
-        if not self.feature_normalization_data is None:
+        if self.feature_normalization_data is not None:
             self.feature_normalization_data.to_csv(
                 file, sep=",", header=header, index=index
             )
