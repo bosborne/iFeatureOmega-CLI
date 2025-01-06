@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # _*_ coding: utf-8 _*_
 
-import os, sys, re
+import os
+import sys
+import re
 from networkx.algorithms import cluster
 from networkx.algorithms.tree.recognition import is_tree
 
