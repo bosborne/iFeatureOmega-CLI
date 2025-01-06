@@ -4,6 +4,7 @@
 import os
 import sys
 import re
+
 # from networkx.algorithms import cluster
 # from networkx.algorithms.tree.recognition import is_tree
 
@@ -26,6 +27,7 @@ from Bio.PDB.MMCIFParser import MMCIFParser
 from Bio.PDB.DSSP import DSSP
 from Bio.PDB.ResidueDepth import ResidueDepth
 from Bio.PDB.HSExposure import HSExposureCA, HSExposureCB
+
 # from Bio.PDB.PDBList import PDBList
 from sklearn.cluster import (
     KMeans,
@@ -873,7 +875,7 @@ class iProtein(Sequence):
                 header.append("Binary_" + str(i))
             encodings.append(header)
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for aa in sequence:
                     if aa == "-":
@@ -3236,7 +3238,7 @@ class iProtein(Sequence):
             header.append("CTriad_{0}".format(f))
         encodings.append(header)
         for i in self.fasta_list:
-            name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+            name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
             code = [name]
             code = code + self.CalculateKSCTriad(sequence, 0, features, AADict)
             encodings.append(code)
@@ -4064,7 +4066,7 @@ class iProtein(Sequence):
             header = header + [ttype + "_" + g + "_gap" + str(glValue) for g in gNames]
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 numDict = {}
                 for j in range(0, len(sequence), glValue + 1):
@@ -4083,7 +4085,7 @@ class iProtein(Sequence):
             ]
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 numDict = {}
                 for j in range(0, len(sequence), glValue + 1):
@@ -4114,7 +4116,7 @@ class iProtein(Sequence):
             ]
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 numDict = {}
                 for j in range(0, len(sequence), glValue + 1):
@@ -4153,7 +4155,7 @@ class iProtein(Sequence):
             header = header + [ttype + "_" + g + "_LC" + str(glValue) for g in gNames]
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 numDict = {}
                 for j in range(0, len(sequence)):
@@ -4172,7 +4174,7 @@ class iProtein(Sequence):
             ]
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 numDict = {}
                 for j in range(0, len(sequence)):
@@ -4203,7 +4205,7 @@ class iProtein(Sequence):
             ]
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 numDict = {}
                 for j in range(0, len(sequence)):
@@ -7826,14 +7828,14 @@ class iProtein(Sequence):
             # calculate pair distance
             distance_dict = {}
             for i in range(len(self.fasta_list)):
-                name_seq1, sequence_1, label_1, usage_1 = (
+                name_seq1, sequence_1, _, usage_1 = (
                     self.fasta_list[i][0],
                     self.fasta_list[i][1],
                     self.fasta_list[i][2],
                     self.fasta_list[i][3],
                 )
                 for j in range(i + 1, len(self.fasta_list)):
-                    name_seq2, sequence_2, label_2, usage_2 = (
+                    name_seq2, sequence_2, _, usage_2 = (
                         self.fasta_list[j][0],
                         self.fasta_list[j][1],
                         self.fasta_list[j][2],
@@ -7854,7 +7856,7 @@ class iProtein(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, _, _ = i[0], i[1], i[2]
                 code = [name]
                 tmp_distance_list = []
                 for j in range(len(training_data)):
@@ -9008,7 +9010,7 @@ class iDNA(Sequence):
             encoding.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 count = Counter(sequence)
                 for key in count:
                     count[key] = count[key] / len(sequence)
@@ -9039,7 +9041,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence)):
                     code.append(sequence[0 : j + 1].count(sequence[j]) / (j + 1))
@@ -9075,7 +9077,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for aa in sequence:
                     code = code + chemical_property.get(aa, [0, 0, 0])
@@ -9111,7 +9113,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence)):
                     if j < len(sequence) and j + window <= len(sequence):
@@ -9147,7 +9149,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for aa in sequence:
                     if aa == "-":
@@ -9192,7 +9194,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for g in range(gap + 1):
                     myDict = {}
@@ -9236,7 +9238,6 @@ class iDNA(Sequence):
                 )
                 return False
             fastas = self.fasta_list
-            AA = "ACGT"
             EIIP_dict = {
                 "A": 0.1260,
                 "C": 0.1340,
@@ -9251,7 +9252,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for aa in sequence:
                     code.append(EIIP_dict.get(aa, 0))
@@ -9308,7 +9309,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 trincleotide_frequency = self.TriNcleotideComposition(sequence, base)
                 code = code + [
@@ -9341,7 +9342,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 sum = 0
                 pair_dict = {}
@@ -9398,7 +9399,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence) - 1):
                     if sequence[j] + sequence[j + 1] in AA_dict:
@@ -9432,7 +9433,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 dinucleotide_dict = {
                     "AA": 0,
@@ -9513,7 +9514,7 @@ class iDNA(Sequence):
                 AADict[base[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tmpCode = [0] * 16
                 for j in range(len(sequence) - 2 + 1):
@@ -9582,7 +9583,7 @@ class iDNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for p_name in property_name:
                     for j in range(len(sequence) - 1):
@@ -9637,7 +9638,7 @@ class iDNA(Sequence):
                 AADict[AA[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tmpCode = [0] * 64
                 for j in range(len(sequence) - 3 + 1):
@@ -9711,7 +9712,7 @@ class iDNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for p_name in property_name:
                     for j in range(len(sequence) - 2):
@@ -9752,7 +9753,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 f1_dict = {
                     "A": 0,
@@ -9842,7 +9843,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence) - 1):
                     code += AA_dict.get(sequence[j : j + 2], [0] * 16)
@@ -9877,7 +9878,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence) - 2):
                     code += AA_dict.get(sequence[j : j + 3], [0] * 64)
@@ -9914,7 +9915,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence) - 3):
                     code += AA_dict.get(sequence[j : j + 4], [0] * 256)
@@ -9940,7 +9941,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos1_dict = {}
                 pos2_dict = {}
@@ -10054,7 +10055,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos_dict = {}
                 for i in range(len(sequence) - 1):
@@ -10113,7 +10114,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos1_dict = {}
                 pos2_dict = {}
@@ -10230,7 +10231,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos_dict = {}
                 for i in range(len(sequence) - 2):
@@ -10292,7 +10293,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos1_dict = {}
                 pos2_dict = {}
@@ -10438,7 +10439,7 @@ class iDNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 N = len(sequence) - 1
                 for p_name in property_name:
@@ -10519,7 +10520,7 @@ class iDNA(Sequence):
             for i in range(len(AA_list)):
                 AADict[AA_list[i]] = i
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 N = len(sequence) - 1
                 for p_name in property_name:
@@ -10624,7 +10625,7 @@ class iDNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 N = len(sequence) - 1
                 for p_name in property_name:
@@ -10702,7 +10703,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
 
                 for p in myPropertyName:
@@ -10761,7 +10762,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
 
                 for pair in propertyPairs:
@@ -11557,7 +11558,7 @@ class iDNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, _, _ = i[0], i[1], i[2]
                 code = [name]
                 tmp_distance_list = []
                 for j in range(len(training_data)):
@@ -12399,7 +12400,7 @@ class iRNA(Sequence):
             else:
                 NA = "ACDEFGHIKLMNPQRSTVWY"
 
-            if upto == True:
+            if upto:
                 tmp_header = ["Sample", "label"]
                 for tmpK in range(1, k + 1):
                     for kmer in itertools.product(NA, repeat=tmpK):
@@ -13180,7 +13181,7 @@ class iRNA(Sequence):
                 AADict[base[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tmpCode = [0] * 16
                 for j in range(len(sequence) - 2 + 1):
@@ -13249,7 +13250,7 @@ class iRNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for p_name in property_name:
                     for j in range(len(sequence) - 1):
@@ -13304,7 +13305,7 @@ class iRNA(Sequence):
                 AADict[AA[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tmpCode = [0] * 64
                 for j in range(len(sequence) - 3 + 1):
@@ -13378,7 +13379,7 @@ class iRNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for p_name in property_name:
                     for j in range(len(sequence) - 2):
@@ -13419,7 +13420,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 f1_dict = {
                     "A": 0,
@@ -13509,7 +13510,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence) - 1):
                     code += AA_dict.get(sequence[j : j + 2], [0] * 16)
@@ -13544,7 +13545,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence) - 2):
                     code += AA_dict.get(sequence[j : j + 3], [0] * 64)
@@ -13581,7 +13582,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in self.fasta_list:
-                name, sequence, label = i[0], i[1], i[2]
+                name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence) - 3):
                     code += AA_dict.get(sequence[j : j + 4], [0] * 256)
@@ -13607,7 +13608,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos1_dict = {}
                 pos2_dict = {}
@@ -13721,7 +13722,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos_dict = {}
                 for i in range(len(sequence) - 1):
@@ -13897,7 +13898,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos_dict = {}
                 for i in range(len(sequence) - 2):
@@ -13959,7 +13960,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 pos1_dict = {}
                 pos2_dict = {}
@@ -14105,7 +14106,7 @@ class iRNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 N = len(sequence) - 1
                 for p_name in property_name:
@@ -14186,7 +14187,7 @@ class iRNA(Sequence):
             for i in range(len(AA_list)):
                 AADict[AA_list[i]] = i
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 N = len(sequence) - 1
                 for p_name in property_name:
@@ -14291,7 +14292,7 @@ class iRNA(Sequence):
                 AADict[AA_list[i]] = i
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, _ = elem[0], re.sub("-", "", elem[1]), elem[2]
                 code = [name]
                 N = len(sequence) - 1
                 for p_name in property_name:
@@ -14369,7 +14370,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
 
                 for p in myPropertyName:
@@ -14428,7 +14429,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
 
                 for pair in propertyPairs:
@@ -14503,7 +14504,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 ## Auto covariance
                 for p in myPropertyName:
@@ -14670,7 +14671,7 @@ class iRNA(Sequence):
                 header.append("PseDNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
@@ -14710,7 +14711,7 @@ class iRNA(Sequence):
                 header.append("PCPseDNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
@@ -14752,7 +14753,7 @@ class iRNA(Sequence):
             encodings.append(header)
 
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array(
@@ -14793,7 +14794,7 @@ class iRNA(Sequence):
 
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array_type2(
@@ -14833,7 +14834,7 @@ class iRNA(Sequence):
                 header.append("SCPseTNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array_type2(
@@ -14879,7 +14880,7 @@ class iRNA(Sequence):
                 header.append("PseKNC_lamada_" + str(k))
             encodings.append(header)
             for i in fastas:
-                name, sequence, label = i[0], re.sub("-", "", i[1]), i[2]
+                name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
                 kmerFreauency = self.get_kmer_frequency(sequence, kmer)
                 thetaArray = self.get_theta_array(
@@ -14982,7 +14983,7 @@ class iRNA(Sequence):
 
             for i in fastas:
                 if i[3] == "testing":
-                    name, sequence, label = i[0], i[1], i[2]
+                    name, sequence, _ = i[0], i[1], i[2]
                     code = [name]
                     for j in range(len(sequence) - 2):
                         if re.search("-", sequence[j : j + 3]):
@@ -15105,14 +15106,14 @@ class iRNA(Sequence):
             # calculate pair distance
             distance_dict = {}
             for i in range(len(self.fasta_list)):
-                name_seq1, sequence_1, label_1, usage_1 = (
+                name_seq1, sequence_1, _, usage_1 = (
                     self.fasta_list[i][0],
                     self.fasta_list[i][1],
                     self.fasta_list[i][2],
                     self.fasta_list[i][3],
                 )
                 for j in range(i + 1, len(self.fasta_list)):
-                    name_seq2, sequence_2, label_2, usage_2 = (
+                    name_seq2, sequence_2, _, usage_2 = (
                         self.fasta_list[j][0],
                         self.fasta_list[j][1],
                         self.fasta_list[j][2],
@@ -17655,7 +17656,7 @@ class iPlot:
         ax1.set_xlim(0, np.sum(data, axis=1).max())
 
         for i, (colname, color) in enumerate(zip(category_names, category_colors)):
-            widths = data[:, i]
+            # widths = data[:, i]
             # starts = data_cum[:, i] - widths
             # rects = ax1.barh(
             #     labels, widths, left=starts, height=0.1, label=colname, color=color
