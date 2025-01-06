@@ -9032,7 +9032,6 @@ class iDNA(Sequence):
             if not self.is_equal:
                 self.error_msg = "ANF descriptor need fasta sequence with equal length."
                 return False
-            AA = "ACGT"
             encodings = []
             header = ["SampleName"]
             for i in range(1, len(self.fasta_list[0][1]) + 1):
@@ -9069,7 +9068,6 @@ class iDNA(Sequence):
                 "U": [0, 0, 1],
                 "-": [0, 0, 0],
             }
-            AA = "ACGT"
             encodings = []
             header = ["SampleName"]
             for i in range(1, len(self.fasta_list[0][1]) * 3 + 1):
@@ -12737,7 +12735,6 @@ class iRNA(Sequence):
                 "U": [0, 0, 1],
                 "-": [0, 0, 0],
             }
-            AA = "ACGT"
             encodings = []
             header = ["SampleName"]
             for i in range(1, len(self.fasta_list[0][1]) * 3 + 1):
@@ -12907,7 +12904,6 @@ class iRNA(Sequence):
                 )
                 return False
             fastas = self.fasta_list
-            AA = "ACGT"
             EIIP_dict = {
                 "A": 0.1260,
                 "C": 0.1340,
@@ -15392,12 +15388,11 @@ class iStructure(object):
     ):  # target_list: 2d list, [[chain, resseq, resname], [chain, resseq, resname]]
         try:
             tmp_residues = list(self.model.get_residues())
-            dssp_status = True
             try:
                 dssp = DSSP(self.model, self.pdb_file)  # calculate secondary structure
             except Exception as e:
                 self.error_msg = "Secondary structure calculate failed. Please check whether DSSP was installed?"
-                dssp_status = 0
+                # dssp_status = 0
                 dssp = []
 
             residues = []  # remove hetfield, only residues are saved.
@@ -15428,7 +15423,7 @@ class iStructure(object):
                         == target_resname
                     ):  # check if the item in target_list exist
                         target_residue = self.model[target_chain][target_resseq]
-                        target_residue_name = target_residue.get_resname()
+                        target_residue.get_resname()
                         target_atom = (
                             target_residue["CB"]
                             if target_residue.has_id("CB")
@@ -15514,7 +15509,7 @@ class iStructure(object):
                         == target_resname
                     ):  # check if the item in target_list exist
                         target_residue = self.model[target_chain][target_resseq]
-                        target_residue_name = target_residue.get_resname()
+                        # target_residue_name = target_residue.get_resname()
                         target_atom = (
                             target_residue["CB"]
                             if target_residue.has_id("CB")
@@ -15665,12 +15660,11 @@ class iStructure(object):
 
     def get_residue_depth(self):
         try:
-            msms_status = True
             try:
                 rd = ResidueDepth(self.model)
             except Exception as e:
                 self.error_msg = "Residue depth calculate failed. Please check whether msms was installed?"
-                msms_status = 0
+                # msms_status = 0
                 return False, None
 
             key_array = rd.keys()
@@ -17022,7 +17016,7 @@ class iAnalysis:
             ]
             marklist = ["o"] * 9 + ["v"] * 9 + ["^"] * 9 + ["+"] * 9
             prefix = "Cluster:" if method == "Clustering" else "Sample category:"
-            fig = plt.figure(0, facecolor="w")
+            # fig = plt.figure(0, facecolor="w")
             plt.grid(False)
             plt.title(method, fontdict=fontdict)
             plt.xlabel("PC 1", fontdict=fontdict)
@@ -17422,7 +17416,7 @@ class iPlot:
         else:
             array_mean = self.dataframe.mean().values.tolist()
             array_x = list(range(1, len(array_mean) + 1))
-            bp1 = plt.plot(array_x, array_mean, c="#3274A1")
+            plt.plot(array_x, array_mean, c="#3274A1")
 
         plt.xlabel("Descriptors", fontdict=self.font_label)
         plt.ylabel("Mean value", fontdict=self.font_label)
@@ -17552,7 +17546,6 @@ class iPlot:
 
             for elem in ["whiskers", "caps"]:
                 for k, item in enumerate(bp2[elem]):
-                    j = k // 2
                     item.set(color=colorlist[0])
             for k, flier in enumerate(bp2["fliers"]):
                 flier.set(marker="o", markeredgecolor=colorlist[0], markeredgewidth=1)
@@ -17654,7 +17647,7 @@ class iPlot:
         results = {"Color range": [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]}
         labels = list(results.keys())
         data = np.array(list(results.values()))
-        data_cum = data.cumsum(axis=1)
+        # data_cum = data.cumsum(axis=1)
         category_colors = plt.get_cmap("RdYlGn")(np.linspace(0.15, 0.85, data.shape[1]))
 
         ax1.invert_yaxis()
@@ -17663,13 +17656,13 @@ class iPlot:
 
         for i, (colname, color) in enumerate(zip(category_names, category_colors)):
             widths = data[:, i]
-            starts = data_cum[:, i] - widths
-            rects = ax1.barh(
-                labels, widths, left=starts, height=0.1, label=colname, color=color
-            )
+            # starts = data_cum[:, i] - widths
+            # rects = ax1.barh(
+            #     labels, widths, left=starts, height=0.1, label=colname, color=color
+            # )
 
             r, g, b, _ = color
-            text_color = "white" if r * g * b < 0.5 else "darkgrey"
+            # text_color = "white" if r * g * b < 0.5 else "darkgrey"
             # ax1.bar_label(rects, label_type='center', color=text_color)
         ax1.legend(
             ncol=len(category_names),
