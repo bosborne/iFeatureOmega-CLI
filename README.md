@@ -10,7 +10,7 @@ This fork has setup code from the PyPI package to enable CL-installation.
 
 ## Running environment
 
-  *iFeatureOmega* is an open-source Python-based toolkit, which operates in the Python environment (Python version 3.7) and can run on multiple operating systems (such as Windows, Mac and Linux). Prior to installing and running *iFeatureOmega*, all the dependencies should be installed in the Python environment, including biopython, networkx, numpy (>=1.21.4), pandas (>=1.3.4), scikit-learn (>=1.0.1), scipy (>=1.7.3), matplotlib (**3.4.3**), qdarkstyle, sip, datetime, seaborn and joblib. **For convenience, we strongly recommended users to install the Anaconda Python environment in your local computer. The software can be freely downloaded from <https://www.anaconda.com/>.**
+iFeatureOmega* is an open-source Python-based toolkit, which operates in the Python environment (Python version 3.7) and can run on multiple operating systems (such as Windows, Mac and Linux). Prior to installing and running *iFeatureOmega*, all the dependencies should be installed in the Python environment, including biopython, networkx, numpy (>=1.21.4), pandas (>=1.3.4), scikit-learn (>=1.0.1), scipy (>=1.7.3), matplotlib (**3.4.3**), qdarkstyle, sip, datetime, seaborn and joblib. **For convenience, we strongly recommended users to install the Anaconda Python environment in your local computer. The software can be freely downloaded from <https://www.anaconda.com/>.**
   
 ## Installation
 
@@ -99,7 +99,9 @@ Please refer to [*iFeatureOmega* manual](https://github.com/Superzchen/iFeatureO
 
 Please refer to [*iFeatureOmega* manual](https://github.com/Superzchen/iFeatureOmegaGUI/blob/main/docs/iFeatureOmega_manual.pdf ) for detailed usage.
 
-### There were seven main python class in *iFeatureOmega-CLI*, including “iProtein”, “iDNA”, “iRNA”, “iStructure” and “iLigand”, which are feature extraction methods for protein sequences, DNA sequences, RNA sequences, protein structures and ligand molecules, respectively. “iAnalysis” class is also equipped for feature analysis, while “iPlot” class is used to generate the corresponding plots. In each class, we provide the example code, users can run the following command view the example code for “iAnalysis” class
+### Classes
+
+There were seven main python class in *iFeatureOmega-CLI*, including “iProtein”, “iDNA”, “iRNA”, “iStructure” and “iLigand”, which are feature extraction methods for protein sequences, DNA sequences, RNA sequences, protein structures and ligand molecules, respectively. “iAnalysis” class is also equipped for feature analysis, while “iPlot” class is used to generate the corresponding plots. In each class, we provide the example code, users can run the following command view the example code for “iAnalysis” class
 
   ```sh
   $ python
