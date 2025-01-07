@@ -1,3 +1,5 @@
+README.md
+setup.cfg
 setup.py
 src/iFeatureOmegaCLI/__init__.py
 src/iFeatureOmegaCLI/iFeatureOmegaCLI.py
