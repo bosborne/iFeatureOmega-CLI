@@ -1601,7 +1601,6 @@ class iProtein(Sequence):
                 "uncharger": "STCPNQ",
             }
             groupKey = group.keys()
-            baseNum = len(groupKey)
             dipeptide = [g1 + "." + g2 for g1 in groupKey for g2 in groupKey]
             index = {}
             for key in groupKey:
@@ -1653,7 +1652,6 @@ class iProtein(Sequence):
                 "uncharger": "STCPNQ",
             }
             groupKey = group.keys()
-            baseNum = len(groupKey)
             triple = [
                 g1 + "." + g2 + "." + g3
                 for g1 in groupKey
@@ -17676,7 +17674,7 @@ class iPlot:
             )
 
             r, g, b, _ = color
-            text_color = "white" if r * g * b < 0.5 else "darkgrey"
+            # text_color = "white" if r * g * b < 0.5 else "darkgrey"
             # ax1.bar_label(rects, label_type='center', color=text_color)
         ax1.legend(
             ncol=len(category_names),
