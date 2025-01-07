@@ -10,31 +10,11 @@ This fork has setup code from the PyPI package to enable CL-installation.
 
 ## Running environment
 
-iFeatureOmega* is an open-source Python-based toolkit, which operates in the Python environment (Python version 3.7) and can run on multiple operating systems (such as Windows, Mac and Linux). Prior to installing and running *iFeatureOmega*, all the dependencies should be installed in the Python environment, including biopython, networkx, numpy (>=1.21.4), pandas (>=1.3.4), scikit-learn (>=1.0.1), scipy (>=1.7.3), matplotlib (**3.4.3**), qdarkstyle, sip, datetime, seaborn and joblib. **For convenience, we strongly recommended users to install the Anaconda Python environment in your local computer. The software can be freely downloaded from <https://www.anaconda.com/>.**
-  
+iFeatureOmega* is an open-source Python-based toolkit, which operates in the Python environment (Python version 3.7) and can run on multiple operating systems (such as Windows, Mac and Linux). Prior to installing and running *iFeatureOmega*, all the dependencies should be installed in the Python environment, including biopython, networkx, numpy (>=1.21.4), pandas (>=1.3.4), scikit-learn (>=1.0.1), scipy (>=1.7.3), matplotlib (**3.4.3**), qdarkstyle, sip, datetime, seaborn and joblib.
+
 ## Installation
 
-- Step 1. Download and install the anaconda platform
-
-  ```sh  
-  Download anaconda from:https://repo.anaconda.com/archive/ (Version: 2020.02)  
-  ```  
-
-- Step 2. Install anaconda environment on your own machine and make sure the “Add Anaconda to the system PATH environment variable” option is selected when installation
-
-- Step 3. Install MSMS, DSSP, RDKit, biopython and networkx
-
-  ```sh  
-  conda install biopython
-  conda install -c rdkit rdkit
-  conda install -c salilab dssp
-  conda install -c bioconda msms
-  conda install networkx
-  ```
-
-  **Note:** dssp and msms can not be install on Windows system.
-  
-- Step 4. Install *iFeatureOmega* through pip3
+### Install *iFeatureOmega* through pip3
 
   ```sh  
   # GUI version
@@ -43,18 +23,10 @@ iFeatureOmega* is an open-source Python-based toolkit, which operates in the Pyt
   # CLI version
   pip3 install iFeatureOmegaCLI
   ```
-  
-- Step 4. run *iFeatureOmega*:
 
-  ```sh
-  # GUI version
-  $ python
-  >>> from iFeatureOmegaGUI import runiFeatureOmegaGUI
-  >>> runiFeatureOmegaGUI()
-  ```
+### CLI version
 
-  ```sh
-  # CLI version
+```pythonb
   $ python
   >>> import iFeatureOmegaCLI
   >>> dna = iFeatureOmegaCLI.iDNA('<abs_path>/data_examples/DNA_sequences.txt')
@@ -63,7 +35,7 @@ iFeatureOmega* is an open-source Python-based toolkit, which operates in the Pyt
   >>> dna.get_descriptor("Kmer")
   >>> print(dna.encodings)
   >>> dna.to_csv("Kmer.csv", "index=False", header=False)
-  ```
+```
 
 ## Brief guidance to use (GUI version)  
 
