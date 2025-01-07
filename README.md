@@ -16,13 +16,10 @@ iFeatureOmega* is an open-source Python-based toolkit, which operates in the Pyt
 
 ### Install *iFeatureOmega* through pip3
 
-  ```sh  
-  # GUI version
-  pip3 install iFeatureOmegaGUI
-
+```sh  
   # CLI version
   pip3 install iFeatureOmegaCLI
-  ```
+```
 
 ### CLI version
 
