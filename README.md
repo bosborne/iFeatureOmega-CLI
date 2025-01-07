@@ -11,7 +11,6 @@ An integrative platform for the feature engineering, visualization and analysis 
 This fork has a *setup.py* so it can be installed successfully using *pip*:
 
 ```sh  
-  # CLI version
   git clone git@github.com:bosborne/iFeatureOmega-CLI.git
   cd iFeatureOmega-CLI
   pip3 install .
