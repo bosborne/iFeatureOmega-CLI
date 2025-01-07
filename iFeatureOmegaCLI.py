@@ -485,7 +485,7 @@ class iProtein(Sequence):
                 self.__default_para_dict = json.loads(records)
                 print("File imported successfully.")
             except Exception as e:
-                print("Parameter file parser error.")
+                print(f"Parameter file parser error: {e}")
 
     def get_descriptor(self, descriptor="AAC"):
         # copy parameters
@@ -8651,7 +8651,7 @@ class iDNA(Sequence):
                 self.__default_para_dict = json.loads(records)
                 print("File imported successfully.")
             except Exception as e:
-                print("Parameter file parser error.")
+                print(f"Parameter file parser error: {e}")
 
     def add_samples_label(self, file):
         with open(file) as f:
@@ -17501,7 +17501,7 @@ class iPlot:
 
                 for elem in ["whiskers", "caps"]:
                     for k, item in enumerate(bp2[elem]):
-                        j = k // 2
+                        # j = k // 2
                         item.set(color=colorlist[c % len(colorlist)])
                 for k, flier in enumerate(bp2["fliers"]):
                     flier.set(
