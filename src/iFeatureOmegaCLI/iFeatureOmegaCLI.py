@@ -111,11 +111,9 @@ class Sequence(object):
         fasta_sequences = []
         with open(file, "r") as handle:
             for record in FastaIterator(handle):
-                name = record.id
-                sequence = record.seq.upper()
                 label = record.description if len(record.description) > 0 else "0"
                 label_train = "training"
-                fasta_sequences.append([name, sequence, label, label_train])
+                fasta_sequences.append([record.id, str(record.seq).upper(), label, label_train])
         """
         with open(file) as f:
             records = f.read()
