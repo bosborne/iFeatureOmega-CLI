@@ -4,26 +4,22 @@ An integrative platform for the feature engineering, visualization and analysis 
 
 ## Introduction
 
-This fork has setup code from the PyPI package to enable CL-installation.
-
 *iFeatureOmega* is a comprehensive platform for generating, analyzing and visualizing more than 180 representations for biological sequences, 3D structures and ligands. To the best of our knowledge, *iFeatureOmega* supplies the largest number of feature extraction and analysis approaches for most molecule types compared to other pipelines. Three versions (i.e. *iFeatureOmega-Web*, *iFeatureOmega-GUI* and *iFeatureOmega-CLI*) of *iFeatureOmega* have been made available to cater to both experienced bioinformaticians and biologists with limited programming expertise. *iFeatureOmega* also expands its functionality by integrating 15 feature analysis algorithms (including ten cluster algorithms, three dimensionality reduction algorithms and two feature normalization algorithms) and providing nine types of interactive plots for statistical features visualization (including histogram, kernel density plot, heatmap, boxplot, line chart, scatter plot, circular plot, protein three dimensional structure plot and ligand structure plot). *iFeatureOmega* is an open-source platform for academic purposes. The web server can be accessed through <https://ifeatureomega.erc.monash.edu> and the GUI and CLI versions can be download at:  <https://github.com/Superzchen/iFeatureOmega-GUI> and <https://github.com/Superzchen/iFeatureOmega-CLI>, respectively.
 
-## Running environment
+## Installing this fork
 
-iFeatureOmega* is an open-source Python-based toolkit, which operates in the Python environment (Python version 3.7) and can run on multiple operating systems (such as Windows, Mac and Linux). Prior to installing and running *iFeatureOmega*, all the dependencies should be installed in the Python environment, including biopython, networkx, numpy (>=1.21.4), pandas (>=1.3.4), scikit-learn (>=1.0.1), scipy (>=1.7.3), matplotlib (**3.4.3**), qdarkstyle, sip, datetime, seaborn and joblib.
-
-## Installation
-
-### Install *iFeatureOmega* through pip3
+This fork has a *setup.py* so it can be installed successfully using *pip*:
 
 ```sh  
   # CLI version
+  git clone git@github.com:bosborne/iFeatureOmega-CLI.git
+  cd iFeatureOmegaCLI
   pip3 install iFeatureOmegaCLI
 ```
 
 ### CLI version
 
-```pythonb
+```python
   $ python
   >>> import iFeatureOmegaCLI
   >>> dna = iFeatureOmegaCLI.iDNA('<abs_path>/data_examples/DNA_sequences.txt')
