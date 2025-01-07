@@ -1,6 +1,10 @@
-# *iFeatureOmega* - an integrative platform for the feature engineering, visualization and analysis of features from molecular sequence, structural and ligand data sets
+# *iFeatureOmega*
+
+An integrative platform for the feature engineering, visualization and analysis of features from molecular sequence, structural and ligand data sets
 
 ## Introduction
+
+This fork has setup code from the PyPI package to enable CL-installation.
 
 *iFeatureOmega* is a comprehensive platform for generating, analyzing and visualizing more than 180 representations for biological sequences, 3D structures and ligands. To the best of our knowledge, *iFeatureOmega* supplies the largest number of feature extraction and analysis approaches for most molecule types compared to other pipelines. Three versions (i.e. *iFeatureOmega-Web*, *iFeatureOmega-GUI* and *iFeatureOmega-CLI*) of *iFeatureOmega* have been made available to cater to both experienced bioinformaticians and biologists with limited programming expertise. *iFeatureOmega* also expands its functionality by integrating 15 feature analysis algorithms (including ten cluster algorithms, three dimensionality reduction algorithms and two feature normalization algorithms) and providing nine types of interactive plots for statistical features visualization (including histogram, kernel density plot, heatmap, boxplot, line chart, scatter plot, circular plot, protein three dimensional structure plot and ligand structure plot). *iFeatureOmega* is an open-source platform for academic purposes. The web server can be accessed through <https://ifeatureomega.erc.monash.edu> and the GUI and CLI versions can be download at:  <https://github.com/Superzchen/iFeatureOmega-GUI> and <https://github.com/Superzchen/iFeatureOmega-CLI>, respectively.
 
