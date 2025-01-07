@@ -50,7 +50,7 @@ import matplotlib as mpl
 
 mpl.use("Agg")
 import matplotlib.pyplot as plt
-from chem import *
+#from chem import *
 import copy
 
 plt.style.use("ggplot")
@@ -15349,7 +15349,7 @@ class iStructure(object):
             if self.pdb_file.lower().endswith(".pdb"):
                 with open(self.pdb_file) as f:
                     record = f.read().strip().split("\n")[0]
-                tmp = re.split("\s+", record)
+                tmp = record.split(" ")
                 self.pdb_id = tmp[3].lower()
             if self.pdb_file.lower().endswith(".cif"):
                 with open(self.pdb_file) as f:
