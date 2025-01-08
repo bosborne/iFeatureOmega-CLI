@@ -223,11 +223,11 @@ class iProtein(Sequence):
         super(iProtein, self).__init__(file=file)
         self.__default_para_dict = {
             "EAAC": {"sliding_window": 5},
-            "CKSAAP type 1": {"kspace": 3},
-            "CKSAAP type 2": {"kspace": 3},
+            "CKSAAP_type_1": {"kspace": 3},
+            "CKSAAP_type_2": {"kspace": 3},
             "EGAAC": {"sliding_window": 5},
-            "CKSAAGP type 1": {"kspace": 3},
-            "CKSAAGP type 2": {"kspace": 3},
+            "CKSAAGP_type_1": {"kspace": 3},
+            "CKSAAGP_type_2": {"kspace": 3},
             "AAIndex": {
                 "aaindex": "ANDN920101;ARGP820101;ARGP820102;ARGP820103;BEGF750101;BEGF750102;BEGF750103;BHAR880101"
             },
@@ -264,133 +264,133 @@ class iProtein(Sequence):
                 "aaindex": "ANDN920101;ARGP820101;ARGP820102;ARGP820103;BEGF750101;BEGF750102;BEGF750103;BHAR880101",
                 "nlag": 3,
             },
-            "PseKRAAC type 1": {
+            "PseKRAAC_type_1": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 2": {
+            "PseKRAAC_type_2": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 3A": {
+            "PseKRAAC_type_3A": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 3B": {
+            "PseKRAAC_type_3B": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 4": {
+            "PseKRAAC_type_4": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 5,
             },
-            "PseKRAAC type 5": {
+            "PseKRAAC_type_5": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 3,
             },
-            "PseKRAAC type 6A": {
+            "PseKRAAC_type_6A": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 4,
             },
-            "PseKRAAC type 6B": {
+            "PseKRAAC_type_6B": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 5,
             },
-            "PseKRAAC type 6C": {
+            "PseKRAAC_type_6C": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 5,
             },
-            "PseKRAAC type 7": {
+            "PseKRAAC_type_7": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 8": {
+            "PseKRAAC_type_8": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 9": {
+            "PseKRAAC_type_9": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 10": {
+            "PseKRAAC_type_10": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 11": {
+            "PseKRAAC_type_11": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 12": {
+            "PseKRAAC_type_12": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 13": {
+            "PseKRAAC_type_13": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 4,
             },
-            "PseKRAAC type 14": {
+            "PseKRAAC_type_14": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 15": {
+            "PseKRAAC_type_15": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
                 "k-tuple": 2,
                 "RAAC_clust": 2,
             },
-            "PseKRAAC type 16": {
+            "PseKRAAC_type_16": {
                 "lambdaValue": 3,
                 "PseKRAAC_model": "g-gap",
                 "g-gap": 2,
@@ -414,33 +414,33 @@ class iProtein(Sequence):
         self.__cmd_dict = {
             "AAC": "self._AAC()",
             "EAAC": "self._EAAC()",
-            "CKSAAP type 1": "self._CKSAAP(normalized=True)",
-            "CKSAAP type 2": "self._CKSAAP(normalized=False)",
-            "DPC type 1": "self._DPC(normalized=True)",
-            "DPC type 2": "self._DPC(normalized=False)",
+            "CKSAAP_type_1": "self._CKSAAP(normalized=True)",
+            "CKSAAP_type_2": "self._CKSAAP(normalized=False)",
+            "DPC_type_1": "self._DPC(normalized=True)",
+            "DPC_type_2": "self._DPC(normalized=False)",
             "DDE": "self._DDE()",
-            "TPC type 1": "self._TPC(normalized=True)",
-            "TPC type 2": "self._TPC(normalized=False)",
+            "TPC_type_1": "self._TPC(normalized=True)",
+            "TPC_type_2": "self._TPC(normalized=False)",
             "binary": "self._binary()",
             "binary_6bit": "self._binary_6bit()",
-            "binary_5bit type 1": "self._binary_5bit_type_1()",
-            "binary_5bit type 2": "self._binary_5bit_type_2()",
-            "binary_3bit type 1": "self._binary_3bit_type_1()",
-            "binary_3bit type 2": "self._binary_3bit_type_2()",
-            "binary_3bit type 3": "self._binary_3bit_type_3()",
-            "binary_3bit type 4": "self._binary_3bit_type_4()",
-            "binary_3bit type 5": "self._binary_3bit_type_5()",
-            "binary_3bit type 6": "self._binary_3bit_type_6()",
-            "binary_3bit type 7": "self._binary_3bit_type_7()",
+            "binary_5bit_type_1": "self._binary_5bit_type_1()",
+            "binary_5bit_type_2": "self._binary_5bit_type_2()",
+            "binary_3bit_type_1": "self._binary_3bit_type_1()",
+            "binary_3bit_type_2": "self._binary_3bit_type_2()",
+            "binary_3bit_type_3": "self._binary_3bit_type_3()",
+            "binary_3bit_type_4": "self._binary_3bit_type_4()",
+            "binary_3bit_type_5": "self._binary_3bit_type_5()",
+            "binary_3bit_type_6": "self._binary_3bit_type_6()",
+            "binary_3bit_type_7": "self._binary_3bit_type_7()",
             "AESNN3": "self._AESNN3()",
             "GAAC": "self._GAAC()",
             "EGAAC": "self._EGAAC()",
-            "CKSAAGP type 1": "self._CKSAAGP(normalized=True)",
-            "CKSAAGP type 2": "self._CKSAAGP(normalized=False)",
-            "GDPC type 1": "self._GDPC(normalized=True)",
-            "GDPC type 2": "self._GDPC(normalized=False)",
-            "GTPC type 1": "self._GTPC(normalized=True)",
-            "GTPC type 2": "self._GTPC(normalized=False)",
+            "CKSAAGP_type_1": "self._CKSAAGP(normalized=True)",
+            "CKSAAGP_type_2": "self._CKSAAGP(normalized=False)",
+            "GDPC_type_1": "self._GDPC(normalized=True)",
+            "GDPC_type_2": "self._GDPC(normalized=False)",
+            "GTPC_type_1": "self._GTPC(normalized=True)",
+            "GTPCvtype_2": "self._GTPC(normalized=False)",
             "AAIndex": "self._AAIndex()",
             "ZScale": "self._ZScale()",
             "BLOSUM62": "self._BLOSUM62()",
@@ -457,34 +457,34 @@ class iProtein(Sequence):
             "PAAC": "self._PAAC()",
             "APAAC": "self._APAAC()",
             "OPF_10bit": "self._OPF_10bit()",
-            "OPF_10bit type 1": "self._OPF_10bit_type_1()",
-            "OPF_7bit type 1": "self._OPF_7bit_type_1()",
-            "OPF_7bit type 2": "self._OPF_7bit_type_2()",
-            "OPF_7bit type 3": "self._OPF_7bit_type_3()",
+            "OPF_10bit_typev1": "self._OPF_10bit_type_1()",
+            "OPF_7bit_type_1": "self._OPF_7bit_type_1()",
+            "OPF_7bit_type_2": "self._OPF_7bit_type_2()",
+            "OPF_7bit_type_3": "self._OPF_7bit_type_3()",
             "ASDC": "self._ASDC()",
             "DistancePair": "self._DistancePair()",
             "AC": "self._AC()",
             "CC": "self._CC()",
             "ACC": "self._ACC()",
-            "PseKRAAC type 1": "self._PseKRAAC_type_1()",
-            "PseKRAAC type 2": "self._PseKRAAC_type_2()",
-            "PseKRAAC type 3A": "self._PseKRAAC_type_3A()",
-            "PseKRAAC type 3B": "self._PseKRAAC_type_3B()",
-            "PseKRAAC type 4": "self._PseKRAAC_type_4()",
-            "PseKRAAC type 5": "self._PseKRAAC_type_5()",
-            "PseKRAAC type 6A": "self._PseKRAAC_type_6A()",
-            "PseKRAAC type 6B": "self._PseKRAAC_type_6B()",
-            "PseKRAAC type 6C": "self._PseKRAAC_type_6C()",
-            "PseKRAAC type 7": "self._PseKRAAC_type_7()",
-            "PseKRAAC type 8": "self._PseKRAAC_type_8()",
-            "PseKRAAC type 9": "self._PseKRAAC_type_9()",
-            "PseKRAAC type 10": "self._PseKRAAC_type_10()",
-            "PseKRAAC type 11": "self._PseKRAAC_type_11()",
-            "PseKRAAC type 12": "self._PseKRAAC_type_12()",
-            "PseKRAAC type 13": "self._PseKRAAC_type_13()",
-            "PseKRAAC type 14": "self._PseKRAAC_type_14()",
-            "PseKRAAC type 15": "self._PseKRAAC_type_15()",
-            "PseKRAAC type 16": "self._PseKRAAC_type_16()",
+            "PseKRAAC_type_1": "self._PseKRAAC_type_1()",
+            "PseKRAAC_type_2": "self._PseKRAAC_type_2()",
+            "PseKRAAC_type_3A": "self._PseKRAAC_type_3A()",
+            "PseKRAAC_type_3B": "self._PseKRAAC_type_3B()",
+            "PseKRAAC_type_4": "self._PseKRAAC_type_4()",
+            "PseKRAAC_type_5": "self._PseKRAAC_type_5()",
+            "PseKRAAC_type_6A": "self._PseKRAAC_type_6A()",
+            "PseKRAAC_type_6B": "self._PseKRAAC_type_6B()",
+            "PseKRAAC_type_6C": "self._PseKRAAC_type_6C()",
+            "PseKRAAC_type_7": "self._PseKRAAC_type_7()",
+            "PseKRAAC_type_8": "self._PseKRAAC_type_8()",
+            "PseKRAACvtype_9": "self._PseKRAAC_type_9()",
+            "PseKRAAC_type_10": "self._PseKRAAC_type_10()",
+            "PseKRAAC_type_11": "self._PseKRAAC_type_11()",
+            "PseKRAAC_type_12": "self._PseKRAAC_type_12()",
+            "PseKRAAC_type_13": "self._PseKRAAC_type_13()",
+            "PseKRAAC_type_14": "self._PseKRAAC_type_14()",
+            "PseKRAAC_type_15": "self._PseKRAAC_type_15()",
+            "PseKRAAC_type_16": "self._PseKRAAC_type_16()",
             "KNN": "self._KNN()",
         }
 
@@ -516,12 +516,12 @@ class iProtein(Sequence):
         
         AAC                                                Amino acid composition
         EAAC                                               Enhanced amino acid composition
-        CKSAAP type 1                                      Composition of k-spaced amino acid pairs type 1 - normalized
-        CKSAAP type 2                                      Composition of k-spaced amino acid pairs type 2 - raw count
-        DPC type 1                                         Dipeptide composition type 1 - normalized
-        DPC type 2                                         Dipeptide composition type 2 - raw count
-        TPC type 1                                         Tripeptide composition type 1 - normalized
-        TPC type 2                                         Tripeptide composition type 1 - raw count
+        CKSAAP_type_1                                      Composition of k-spaced amino acid pairs type 1 - normalized
+        CKSAAP_type_2                                      Composition of k-spaced amino acid pairs type 2 - raw count
+        DPC_type_1                                         Dipeptide composition type 1 - normalized
+        DPC_type_2                                         Dipeptide composition type 2 - raw count
+        TPC_type_1                                         Tripeptide composition type 1 - normalized
+        TPC_type_2                                         Tripeptide composition type 1 - raw count
         CTDC                                               Composition
         CTDT                                               Transition
         CTDD                                               Distribution
@@ -531,12 +531,12 @@ class iProtein(Sequence):
         DistancePair                                       PseAAC of distance-pairs and reduced alphabe
         GAAC                                               Grouped amino acid composition
         EGAAC                                              Enhanced grouped amino acid composition
-        CKSAAGP type 1                                     Composition of k-spaced amino acid group pairs type 1- normalized
-        CKSAAGP type 2                                     Composition of k-spaced amino acid group pairs type 2- raw count
-        GDPC type 1                                        Grouped dipeptide composition type 1 - normalized
-        GDPC type 2                                        Grouped dipeptide composition type 2 - raw count
-        GTPC type 1                                        Grouped tripeptide composition type 1 - normalized
-        GTPC type 2                                        Grouped tripeptide composition type 1 - raw count
+        CKSAAGP_type_1                                     Composition of k-spaced amino acid group pairs type 1- normalized
+        CKSAAGP_type_2                                     Composition of k-spaced amino acid group pairs type 2- raw count
+        GDPC_type_1                                        Grouped dipeptide composition type 1 - normalized
+        GDPC_type_2                                        Grouped dipeptide composition type 2 - raw count
+        GTPC_type_1                                        Grouped tripeptide composition type 1 - normalized
+        GTPC_type_2                                        Grouped tripeptide composition type 1 - raw count
         Moran                                              Moran
         Geary                                              Geary
         NMBroto                                            Normalized Moreau-Broto
@@ -547,47 +547,47 @@ class iProtein(Sequence):
         QSOrder                                            Quasi-sequence-order descriptors
         PAAC                                               Pseudo-amino acid composition
         APAAC                                              Amphiphilic PAAC
-        PseKRAAC type 1                                    Pseudo K-tuple reduced amino acids composition type 1
-        PseKRAAC type 2                                    Pseudo K-tuple reduced amino acids composition type 2
-        PseKRAAC type 3A                                   Pseudo K-tuple reduced amino acids composition type 3A
-        PseKRAAC type 3B                                   Pseudo K-tuple reduced amino acids composition type 3B
-        PseKRAAC type 4                                    Pseudo K-tuple reduced amino acids composition type 4
-        PseKRAAC type 5                                    Pseudo K-tuple reduced amino acids composition type 5
-        PseKRAAC type 6A                                   Pseudo K-tuple reduced amino acids composition type 6A
-        PseKRAAC type 6B                                   Pseudo K-tuple reduced amino acids composition type 6B
-        PseKRAAC type 6C                                   Pseudo K-tuple reduced amino acids composition type 6C
-        PseKRAAC type 7                                    Pseudo K-tuple reduced amino acids composition type 7
-        PseKRAAC type 8                                    Pseudo K-tuple reduced amino acids composition type 8
-        PseKRAAC type 9                                    Pseudo K-tuple reduced amino acids composition type 9
-        PseKRAAC type 10                                   Pseudo K-tuple reduced amino acids composition type 10
-        PseKRAAC type 11                                   Pseudo K-tuple reduced amino acids composition type 11
-        PseKRAAC type 12                                   Pseudo K-tuple reduced amino acids composition type 12
-        PseKRAAC type 13                                   Pseudo K-tuple reduced amino acids composition type 13
-        PseKRAAC type 14                                   Pseudo K-tuple reduced amino acids composition type 14
-        PseKRAAC type 15                                   Pseudo K-tuple reduced amino acids composition type 15
-        PseKRAAC type 16                                   Pseudo K-tuple reduced amino acids composition type 16
+        PseKRAAC_type_1                                    Pseudo K-tuple reduced amino acids composition type 1
+        PseKRAAC_type_2                                    Pseudo K-tuple reduced amino acids composition type 2
+        PseKRAAC_type_3A                                   Pseudo K-tuple reduced amino acids composition type 3A
+        PseKRAAC_type_3B                                   Pseudo K-tuple reduced amino acids composition type 3B
+        PseKRAAC_type_4                                    Pseudo K-tuple reduced amino acids composition type 4
+        PseKRAAC_type_5                                    Pseudo K-tuple reduced amino acids composition type 5
+        PseKRAAC_type_6A                                   Pseudo K-tuple reduced amino acids composition type 6A
+        PseKRAAC_type_6B                                   Pseudo K-tuple reduced amino acids composition type 6B
+        PseKRAAC_type_6C                                   Pseudo K-tuple reduced amino acids composition type 6C
+        PseKRAAC_type_7                                    Pseudo K-tuple reduced amino acids composition type 7
+        PseKRAAC_type_8                                    Pseudo K-tuple reduced amino acids composition type 8
+        PseKRAAC_type_9                                    Pseudo K-tuple reduced amino acids composition type 9
+        PseKRAAC_type_10                                   Pseudo K-tuple reduced amino acids composition type 10
+        PseKRAAC_type_11                                   Pseudo K-tuple reduced amino acids composition type 11
+        PseKRAAC_type_12                                   Pseudo K-tuple reduced amino acids composition type 12
+        PseKRAAC_type_13                                   Pseudo K-tuple reduced amino acids composition type 13
+        PseKRAAC_type_14                                   Pseudo K-tuple reduced amino acids composition type 14
+        PseKRAAC_type_15                                   Pseudo K-tuple reduced amino acids composition type 15
+        PseKRAAC_type_16                                   Pseudo K-tuple reduced amino acids composition type 16
         binary                                             Binary
         binary_6bit                                        Binary
-        binary_5bit type 1                                 Binary
-        binary_5bit type 2                                 Binary
-        binary_3bit type 1                                 Binary
-        binary_3bit type 2                                 Binary
-        binary_3bit type 3                                 Binary
-        binary_3bit type 4                                 Binary
-        binary_3bit type 5                                 Binary
-        binary_3bit type 6                                 Binary
-        binary_3bit type 7                                 Binary
+        binary_5bit_type_1                                 Binary
+        binary_5bit_type_2                                 Binary
+        binary_3bit_type_1                                 Binary
+        binary_3bit_type_2                                 Binary
+        binary_3bit_type_3                                 Binary
+        binary_3bit_type_4                                 Binary
+        binary_3bit_type_5                                 Binary
+        binary_3bit_type_6                                 Binary
+        binary_3bit_type_7                                 Binary
         AESNN3                                             Learn from alignments
         OPF_10bit                                          Overlapping property features - 10 bit
-        OPF_7bit type 1                                    Overlapping property features - 7 bit type 1
-        OPF_7bit type 2                                    Overlapping property features - 7 bit type 2
-        OPF_7bit type 3                                    Overlapping property features - 7 bit type 3
+        OPF_7bit_type_1                                    Overlapping property features - 7 bit type 1
+        OPF_7bit_type_2                                    Overlapping property features - 7 bit type 2
+        OPF_7bit_type_3                                    Overlapping property features - 7 bit type 3
         AAIndex                                            AAIndex
         BLOSUM62                                           BLOSUM62
         ZScale                                             Z-Scales index
         KNN                                                K-nearest neighbor
 
-        Note: the first column is the names of availables feature types while the second column is description.  
+        The first column is the names of availables feature types while the second column is description.  
         
         """
 
@@ -17672,7 +17672,6 @@ class iPlot:
             rects = ax1.barh(
                 labels, widths, left=starts, height=0.1, label=colname, color=color
             )
-
             r, g, b, _ = color
             # text_color = "white" if r * g * b < 0.5 else "darkgrey"
             # ax1.bar_label(rects, label_type='center', color=text_color)
