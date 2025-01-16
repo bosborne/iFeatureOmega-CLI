@@ -4,6 +4,6 @@
 
 from .iFeatureOmegaCLI import *
 from .util import *
-from .chem import *
+#from .chem import *
 
 

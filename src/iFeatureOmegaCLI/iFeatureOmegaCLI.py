@@ -12,7 +12,7 @@ import cmath
 import pickle
 import itertools
 import numpy as np
-import networkx as nx
+#import networkx as nx
 import pandas as pd
 import warnings
 from collections import Counter
@@ -38,7 +38,7 @@ from sklearn.neighbors import KernelDensity
 import scipy.cluster.hierarchy as sch
 from sklearn.decomposition import PCA, LatentDirichletAllocation
 from sklearn.manifold import TSNE
-from rdkit import Chem
+#from rdkit import Chem
 import matplotlib as mpl
 
 mpl.use("Agg")
@@ -48,7 +48,7 @@ pPath = os.path.split(os.path.realpath(__file__))[0]
 sys.path.append(pPath)
 sys.path.append(os.path.join(pPath, "chem"))
 
-from chem import *
+#from chem import *
 
 plt.style.use("ggplot")
 warnings.filterwarnings("ignore", category=FutureWarning, module="sklearn")
