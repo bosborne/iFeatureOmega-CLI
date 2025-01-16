@@ -38,7 +38,8 @@ from sklearn.neighbors import KernelDensity
 import scipy.cluster.hierarchy as sch
 from sklearn.decomposition import PCA, LatentDirichletAllocation
 from sklearn.manifold import TSNE
-from rdkit import Chem
+
+# from rdkit import Chem
 import matplotlib as mpl
 
 mpl.use("Agg")
@@ -48,11 +49,13 @@ pPath = os.path.split(os.path.realpath(__file__))[0]
 sys.path.append(pPath)
 sys.path.append(os.path.join(pPath, "chem"))
 
-from chem import *
+# from chem import *
 
 plt.style.use("ggplot")
 warnings.filterwarnings("ignore", category=FutureWarning, module="sklearn")
-warnings.filterwarnings("ignore", category=DeprecationWarning, module="sklearn")
+warnings.filterwarnings(
+    "ignore", category=DeprecationWarning, module="sklearn"
+)
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -111,10 +114,15 @@ class Sequence(object):
         fasta_sequences = []
         with open(file, "r") as handle:
             for record in FastaIterator(handle):
-                label = record.description if len(record.description) > 0 else "0"
+                label = (
+                    record.description if len(record.description) > 0 else "0"
+                )
                 label_train = "training"
-                fasta_sequences.append([record.id, str(record.seq).upper(), label, label_train])
+                fasta_sequences.append(
+                    [record.id, str(record.seq).upper(), label, label_train]
+                )
         """
+        Old code:
         with open(file) as f:
             records = f.read()
         records = records.split(">")[1:]
@@ -129,7 +137,9 @@ class Sequence(object):
             label_train = header_array[2] if len(header_array) >= 3 else "training"
             fasta_sequences.append([name, sequence, label, label_train])
         """
-        sample_purpose = np.array([item[3] == "training" for item in fasta_sequences])
+        sample_purpose = np.array(
+            [item[3] == "training" for item in fasta_sequences]
+        )
         return fasta_sequences, sample_purpose, msg
 
     def sequence_with_equal_length(self):
@@ -502,7 +512,9 @@ class iProtein(Sequence):
         # copy parameters
         if descriptor in self.__default_para_dict:
             for key in self.__default_para_dict[descriptor]:
-                self.__default_para[key] = self.__default_para_dict[descriptor][key]
+                self.__default_para[key] = self.__default_para_dict[
+                    descriptor
+                ][key]
 
         if descriptor in self.__cmd_dict:
             cmd = self.__cmd_dict[descriptor]
@@ -655,12 +667,16 @@ class iProtein(Sequence):
                             "sliding_window"
                         ] <= len(sequence):
                             count = Counter(
-                                sequence[j : j + self.__default_para["sliding_window"]]
+                                sequence[
+                                    j : j
+                                    + self.__default_para["sliding_window"]
+                                ]
                             )
                             for key in count:
                                 count[key] = count[key] / len(
                                     sequence[
-                                        j : j + self.__default_para["sliding_window"]
+                                        j : j
+                                        + self.__default_para["sliding_window"]
                                     ]
                                 )
                             for aa in AA:
@@ -743,8 +759,13 @@ class iProtein(Sequence):
                 code = [name]
                 tmpCode = [0] * 400
                 for j in range(len(sequence) - 2 + 1):
-                    tmpCode[AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]] = (
-                        tmpCode[AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]] + 1
+                    tmpCode[
+                        AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]
+                    ] = (
+                        tmpCode[
+                            AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]
+                        ]
+                        + 1
                     )
                 if sum(tmpCode) != 0:
                     if normalized:
@@ -793,7 +814,9 @@ class iProtein(Sequence):
             encodings.append(header)
             myTM = []
             for pair in diPeptides:
-                myTM.append((myCodons[pair[0]] / 61) * (myCodons[pair[1]] / 61))
+                myTM.append(
+                    (myCodons[pair[0]] / 61) * (myCodons[pair[1]] / 61)
+                )
 
             AADict = {}
             for i in range(len(AA)):
@@ -803,8 +826,13 @@ class iProtein(Sequence):
                 code = [name]
                 tmpCode = [0] * 400
                 for j in range(len(sequence) - 2 + 1):
-                    tmpCode[AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]] = (
-                        tmpCode[AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]] + 1
+                    tmpCode[
+                        AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]
+                    ] = (
+                        tmpCode[
+                            AADict[sequence[j]] * 20 + AADict[sequence[j + 1]]
+                        ]
+                        + 1
                     )
                 if sum(tmpCode) != 0:
                     tmpCode = [i / sum(tmpCode) for i in tmpCode]
@@ -832,7 +860,10 @@ class iProtein(Sequence):
             AA = "ACDEFGHIKLMNPQRSTVWY"
             encodings = []
             triPeptides = [
-                "TPC_" + aa1 + aa2 + aa3 for aa1 in AA for aa2 in AA for aa3 in AA
+                "TPC_" + aa1 + aa2 + aa3
+                for aa1 in AA
+                for aa2 in AA
+                for aa3 in AA
             ]
             header = ["SampleName"] + triPeptides
             encodings.append(header)
@@ -1565,8 +1596,14 @@ class iProtein(Sequence):
                             and sequence[p1] in AA
                             and sequence[p2] in AA
                         ):
-                            gPair[index[sequence[p1]] + "." + index[sequence[p2]]] = (
-                                gPair[index[sequence[p1]] + "." + index[sequence[p2]]]
+                            gPair[
+                                index[sequence[p1]] + "." + index[sequence[p2]]
+                            ] = (
+                                gPair[
+                                    index[sequence[p1]]
+                                    + "."
+                                    + index[sequence[p2]]
+                                ]
                                 + 1
                             )
                             sum = sum + 1
@@ -1617,8 +1654,13 @@ class iProtein(Sequence):
                     myDict[t] = 0
                 sum = 0
                 for j in range(len(sequence) - 2 + 1):
-                    myDict[index[sequence[j]] + "." + index[sequence[j + 1]]] = (
-                        myDict[index[sequence[j]] + "." + index[sequence[j + 1]]] + 1
+                    myDict[
+                        index[sequence[j]] + "." + index[sequence[j + 1]]
+                    ] = (
+                        myDict[
+                            index[sequence[j]] + "." + index[sequence[j + 1]]
+                        ]
+                        + 1
                     )
                     sum = sum + 1
                 if sum == 0:
@@ -1722,15 +1764,21 @@ class iProtein(Sequence):
                 return False
             AA = "ARNDCQEGHILKMFPSTWYV"
             fileAAindex = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "AAindex.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "AAindex.txt",
             )
             with open(fileAAindex) as f:
                 records = f.readlines()[1:]
             AAindex = []
             AAindexName = []
             for i in records:
-                AAindex.append(i.rstrip().split()[1:] if i.rstrip() != "" else None)
-                AAindexName.append(i.rstrip().split()[0] if i.rstrip() != "" else None)
+                AAindex.append(
+                    i.rstrip().split()[1:] if i.rstrip() != "" else None
+                )
+                AAindexName.append(
+                    i.rstrip().split()[0] if i.rstrip() != "" else None
+                )
             index = {}
             for i in range(len(AA)):
                 index[AA[i]] = i
@@ -1829,9 +1877,7 @@ class iProtein(Sequence):
     def _BLOSUM62(self):
         try:
             if not self.is_equal:
-                self.error_msg = (
-                    "BLOSUM62 descriptor need fasta sequence with equal length."
-                )
+                self.error_msg = "BLOSUM62 descriptor need fasta sequence with equal length."
                 return False
             blosum62 = {
                 "A": [
@@ -2274,7 +2320,28 @@ class iProtein(Sequence):
                     -1,
                     4,
                 ],  # V
-                "-": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # -
+                "-": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                ],  # -
             }
             encodings = []
             header = ["SampleName"]
@@ -2304,7 +2371,9 @@ class iProtein(Sequence):
             nlag = self.__default_para["nlag"]
             AA = "ARNDCQEGHILKMFPSTWYV"
             fileAAidx = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "AAidx.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "AAidx.txt",
             )
             with open(fileAAidx) as f:
                 records = f.readlines()[1:]
@@ -2348,7 +2417,9 @@ class iProtein(Sequence):
                             rn = sum(
                                 [
                                     AAidx[prop][index.get(sequence[j], 0)]
-                                    * AAidx[prop][index.get(sequence[j + n], 0)]
+                                    * AAidx[prop][
+                                        index.get(sequence[j + n], 0)
+                                    ]
                                     for j in range(len(sequence) - n)
                                 ]
                             ) / (N - n)
@@ -2373,7 +2444,9 @@ class iProtein(Sequence):
             nlag = self.__default_para["nlag"]
             AA = "ARNDCQEGHILKMFPSTWYV"
             fileAAidx = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "AAidx.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "AAidx.txt",
             )
             with open(fileAAidx) as f:
                 records = f.readlines()[1:]
@@ -2411,15 +2484,22 @@ class iProtein(Sequence):
                 code = [name]
                 N = len(sequence)
                 for prop in range(len(props)):
-                    xmean = sum([AAidx[prop][index[aa]] for aa in sequence]) / N
+                    xmean = (
+                        sum([AAidx[prop][index[aa]] for aa in sequence]) / N
+                    )
                     for n in range(1, nlag + 1):
                         if len(sequence) > nlag:
                             # if key is '-', then the value is 0
                             fenzi = sum(
                                 [
-                                    (AAidx[prop][index.get(sequence[j], 0)] - xmean)
+                                    (
+                                        AAidx[prop][index.get(sequence[j], 0)]
+                                        - xmean
+                                    )
                                     * (
-                                        AAidx[prop][index.get(sequence[j + n], 0)]
+                                        AAidx[prop][
+                                            index.get(sequence[j + n], 0)
+                                        ]
                                         - xmean
                                     )
                                     for j in range(len(sequence) - n)
@@ -2428,7 +2508,12 @@ class iProtein(Sequence):
                             fenmu = (
                                 sum(
                                     [
-                                        (AAidx[prop][index.get(sequence[j], 0)] - xmean)
+                                        (
+                                            AAidx[prop][
+                                                index.get(sequence[j], 0)
+                                            ]
+                                            - xmean
+                                        )
                                         ** 2
                                         for j in range(len(sequence))
                                     ]
@@ -2456,7 +2541,9 @@ class iProtein(Sequence):
             props = self.__default_para["aaindex"].split(";")
             nlag = self.__default_para["nlag"]
             fileAAidx = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "AAidx.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "AAidx.txt",
             )
             AA = "ARNDCQEGHILKMFPSTWYV"
             with open(fileAAidx) as f:
@@ -2495,7 +2582,9 @@ class iProtein(Sequence):
                 code = [name]
                 N = len(sequence)
                 for prop in range(len(props)):
-                    xmean = sum([AAidx[prop][index[aa]] for aa in sequence]) / N
+                    xmean = (
+                        sum([AAidx[prop][index[aa]] for aa in sequence]) / N
+                    )
                     for n in range(1, nlag + 1):
                         if len(sequence) > nlag:
                             # if key is '-', then the value is 0
@@ -2508,14 +2597,20 @@ class iProtein(Sequence):
                                             [
                                                 (
                                                     AAidx[prop][
-                                                        index.get(sequence[j], 0)
+                                                        index.get(
+                                                            sequence[j], 0
+                                                        )
                                                     ]
                                                     - AAidx[prop][
-                                                        index.get(sequence[j + n], 0)
+                                                        index.get(
+                                                            sequence[j + n], 0
+                                                        )
                                                     ]
                                                 )
                                                 ** 2
-                                                for j in range(len(sequence) - n)
+                                                for j in range(
+                                                    len(sequence) - n
+                                                )
                                             ]
                                         )
                                     )
@@ -2524,7 +2619,9 @@ class iProtein(Sequence):
                                             [
                                                 (
                                                     AAidx[prop][
-                                                        index.get(sequence[j], 0)
+                                                        index.get(
+                                                            sequence[j], 0
+                                                        )
                                                     ]
                                                     - xmean
                                                 )
@@ -2567,12 +2664,16 @@ class iProtein(Sequence):
                 return False
             try:
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", "AAindex.data"
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    "AAindex.data",
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             for p_name in property_name:
                 tmp = np.array(property_dict[p_name], dtype=float)
@@ -2642,9 +2743,7 @@ class iProtein(Sequence):
         try:
             property_name = self.__default_para["aaindex"].split(";")
             if len(property_name) < 2:
-                self.error_msg = (
-                    "More than two property should be selected for this descriptor."
-                )
+                self.error_msg = "More than two property should be selected for this descriptor."
                 return False
             nlag = self.__default_para["nlag"]
             if self.minimum_length_without_minus < nlag + 1:
@@ -2652,12 +2751,16 @@ class iProtein(Sequence):
                 return False
             try:
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", "AAindex.data"
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    "AAindex.data",
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             for p_name in property_name:
                 tmp = np.array(property_dict[p_name], dtype=float)
@@ -2739,9 +2842,7 @@ class iProtein(Sequence):
         try:
             property_name = self.__default_para["aaindex"].split(";")
             if len(property_name) < 2:
-                self.error_msg = (
-                    "More than two property should be selected for this descriptor."
-                )
+                self.error_msg = "More than two property should be selected for this descriptor."
                 return False
             nlag = self.__default_para["nlag"]
             if self.minimum_length_without_minus < nlag + 1:
@@ -2749,12 +2850,16 @@ class iProtein(Sequence):
                 return False
             try:
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", "AAindex.data"
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    "AAindex.data",
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             for p_name in property_name:
                 tmp = np.array(property_dict[p_name], dtype=float)
@@ -3035,7 +3140,9 @@ class iProtein(Sequence):
             for i in self.fasta_list:
                 name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
-                aaPair = [sequence[j : j + 2] for j in range(len(sequence) - 1)]
+                aaPair = [
+                    sequence[j : j + 2] for j in range(len(sequence) - 1)
+                ]
                 for p in property:
                     c1221, c1331, c2332 = 0, 0, 0
                     for pair in aaPair:
@@ -3217,9 +3324,7 @@ class iProtein(Sequence):
     def _CTriad(self):
         # try:
         if self.minimum_length_without_minus < 3:
-            self.error_msg = (
-                "CTriad descriptor need fasta sequence with minimum length > 3."
-            )
+            self.error_msg = "CTriad descriptor need fasta sequence with minimum length > 3."
             return False
         AAGroup = {
             "g1": "AGV",
@@ -3300,7 +3405,9 @@ class iProtein(Sequence):
                 if len(sequence) < 2 * gap + 3:
                     self.error_msg = 'Error: for "KSCTriad" encoding, the input fasta sequences should be greater than (2*gap+3).'
                     return 0
-                code = code + self.CalculateKSCTriad(sequence, gap, features, AADict)
+                code = code + self.CalculateKSCTriad(
+                    sequence, gap, features, AADict
+                )
                 encodings.append(code)
             encodings = np.array(encodings)
             self.encodings = pd.DataFrame(
@@ -3322,7 +3429,9 @@ class iProtein(Sequence):
                 "Schneider-Wrede.txt",
             )
             dataFile1 = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "Grantham.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "Grantham.txt",
             )
             AA = "ACDEFGHIKLMNPQRSTVWY"
             AA1 = "ARNDCQEGHILKMFPSTWYV"
@@ -3372,7 +3481,9 @@ class iProtein(Sequence):
                     code.append(
                         sum(
                             [
-                                AADistance[DictAA[sequence[j]]][DictAA[sequence[j + n]]]
+                                AADistance[DictAA[sequence[j]]][
+                                    DictAA[sequence[j + n]]
+                                ]
                                 ** 2
                                 for j in range(len(sequence) - n)
                             ]
@@ -3417,7 +3528,9 @@ class iProtein(Sequence):
                 "Schneider-Wrede.txt",
             )
             dataFile1 = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "Grantham.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "Grantham.txt",
             )
             AA = "ACDEFGHIKLMNPQRSTVWY"
             AA1 = "ARNDCQEGHILKMFPSTWYV"
@@ -3473,7 +3586,9 @@ class iProtein(Sequence):
                     arraySW.append(
                         sum(
                             [
-                                AADistance[DictAA[sequence[j]]][DictAA[sequence[j + n]]]
+                                AADistance[DictAA[sequence[j]]][
+                                    DictAA[sequence[j + n]]
+                                ]
                                 ** 2
                                 for j in range(len(sequence) - n)
                             ]
@@ -3529,7 +3644,9 @@ class iProtein(Sequence):
                 return False
             w = self.__default_para["weight"]
             dataFile = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "PAAC.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "PAAC.txt",
             )
             with open(dataFile) as f:
                 records = f.readlines()
@@ -3541,7 +3658,9 @@ class iProtein(Sequence):
             AAPropertyNames = []
             for i in range(1, len(records)):
                 array = (
-                    records[i].rstrip().split() if records[i].rstrip() != "" else None
+                    records[i].rstrip().split()
+                    if records[i].rstrip() != ""
+                    else None
                 )
                 AAProperty.append([float(j) for j in array[1:]])
                 AAPropertyNames.append(array[0])
@@ -3566,7 +3685,10 @@ class iProtein(Sequence):
                         sum(
                             [
                                 self.Rvalue(
-                                    sequence[j], sequence[j + n], AADict, AAProperty1
+                                    sequence[j],
+                                    sequence[j + n],
+                                    AADict,
+                                    AAProperty1,
                                 )
                                 for j in range(len(sequence) - n)
                             ]
@@ -3598,7 +3720,9 @@ class iProtein(Sequence):
                 return False
             w = self.__default_para["weight"]
             dataFile = os.path.join(
-                os.path.split(os.path.realpath(__file__))[0], "data", "PAAC.txt"
+                os.path.split(os.path.realpath(__file__))[0],
+                "data",
+                "PAAC.txt",
             )
             with open(dataFile) as f:
                 records = f.readlines()
@@ -3610,7 +3734,9 @@ class iProtein(Sequence):
             AAPropertyNames = []
             for i in range(1, len(records) - 1):
                 array = (
-                    records[i].rstrip().split() if records[i].rstrip() != "" else None
+                    records[i].rstrip().split()
+                    if records[i].rstrip() != ""
+                    else None
                 )
                 AAProperty.append([float(j) for j in array[1:]])
                 AAPropertyNames.append(array[0])
@@ -3648,7 +3774,9 @@ class iProtein(Sequence):
                     myDict[aa] = sequence.count(aa)
 
                 code = code + [myDict[aa] / (1 + w * sum(theta)) for aa in AA]
-                code = code + [w * value / (1 + w * sum(theta)) for value in theta]
+                code = code + [
+                    w * value / (1 + w * sum(theta)) for value in theta
+                ]
                 encodings.append(code)
             encodings = np.array(encodings)
             self.encodings = pd.DataFrame(
@@ -3664,7 +3792,9 @@ class iProtein(Sequence):
     def _OPF_10bit(self):
         try:
             if not self.is_equal:
-                self.error_msg = "OPF descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "OPF descriptor need fasta sequence with equal length."
+                )
                 return False
             physicochemical_properties_list = [
                 "FYWH",
@@ -3722,7 +3852,9 @@ class iProtein(Sequence):
     def _OPF_7bit_type_1(self):
         try:
             if not self.is_equal:
-                self.error_msg = "OPF descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "OPF descriptor need fasta sequence with equal length."
+                )
                 return False
             physicochemical_properties_list = [
                 "ACFGHILMNPQSTVWY",
@@ -3774,7 +3906,9 @@ class iProtein(Sequence):
     def _OPF_7bit_type_2(self):
         try:
             if not self.is_equal:
-                self.error_msg = "OPF descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "OPF descriptor need fasta sequence with equal length."
+                )
                 return False
             physicochemical_properties_list = [
                 "DE",
@@ -3826,7 +3960,9 @@ class iProtein(Sequence):
     def _OPF_7bit_type_3(self):
         try:
             if not self.is_equal:
-                self.error_msg = "OPF descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "OPF descriptor need fasta sequence with equal length."
+                )
                 return False
             physicochemical_properties_list = [
                 "KR",
@@ -4072,7 +4208,9 @@ class iProtein(Sequence):
         encodings = []
         header = ["SampleName"]
         if ktuple == 1:
-            header = header + [ttype + "_" + g + "_gap" + str(glValue) for g in gNames]
+            header = header + [
+                ttype + "_" + g + "_gap" + str(glValue) for g in gNames
+            ]
             encodings.append(header)
             for i in fastas:
                 name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
@@ -4157,11 +4295,15 @@ class iProtein(Sequence):
                 encodings.append(code)
         return encodings
 
-    def lambdaModel(self, fastas, myDict, gDict, gNames, ktuple, glValue, ttype):
+    def lambdaModel(
+        self, fastas, myDict, gDict, gNames, ktuple, glValue, ttype
+    ):
         encodings = []
         header = ["SampleName"]
         if ktuple == 1:
-            header = header + [ttype + "_" + g + "_LC" + str(glValue) for g in gNames]
+            header = header + [
+                ttype + "_" + g + "_LC" + str(glValue) for g in gNames
+            ]
             encodings.append(header)
             for i in fastas:
                 name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
@@ -4218,7 +4360,9 @@ class iProtein(Sequence):
                 code = [name]
                 numDict = {}
                 for j in range(0, len(sequence)):
-                    if j + glValue < len(sequence) and j + 2 * glValue < len(sequence):
+                    if j + glValue < len(sequence) and j + 2 * glValue < len(
+                        sequence
+                    ):
                         numDict[
                             gDict[myDict[sequence[j]]]
                             + "_"
@@ -4257,8 +4401,31 @@ class iProtein(Sequence):
                 7: ["WFYH", "MILV", "CATS", "P", "G", "NQDE", "RK"],
                 8: ["WFYH", "MILV", "CA", "NTS", "P", "G", "DE", "QRK"],
                 9: ["WFYH", "MI", "LV", "CA", "NTS", "P", "G", "DE", "QRK"],
-                10: ["WFY", "ML", "IV", "CA", "TS", "NH", "P", "G", "DE", "QRK"],
-                11: ["WFY", "ML", "IV", "CA", "TS", "NH", "P", "G", "D", "QE", "RK"],
+                10: [
+                    "WFY",
+                    "ML",
+                    "IV",
+                    "CA",
+                    "TS",
+                    "NH",
+                    "P",
+                    "G",
+                    "DE",
+                    "QRK",
+                ],
+                11: [
+                    "WFY",
+                    "ML",
+                    "IV",
+                    "CA",
+                    "TS",
+                    "NH",
+                    "P",
+                    "G",
+                    "D",
+                    "QE",
+                    "RK",
+                ],
                 12: [
                     "WFY",
                     "ML",
@@ -4567,8 +4734,31 @@ class iProtein(Sequence):
                 7: ["AGP", "DEQNH", "TKRMIV", "W", "YF", "L", "CS"],
                 8: ["AG", "DEQN", "TKRMIV", "HY", "W", "L", "FP", "CS"],
                 9: ["AG", "P", "DEQN", "TKRMI", "HY", "W", "F", "L", "VCS"],
-                10: ["AG", "P", "DEQN", "TKRM", "HY", "W", "F", "I", "L", "VCS"],
-                11: ["AG", "P", "DEQN", "TK", "RI", "H", "Y", "W", "F", "ML", "VCS"],
+                10: [
+                    "AG",
+                    "P",
+                    "DEQN",
+                    "TKRM",
+                    "HY",
+                    "W",
+                    "F",
+                    "I",
+                    "L",
+                    "VCS",
+                ],
+                11: [
+                    "AG",
+                    "P",
+                    "DEQN",
+                    "TK",
+                    "RI",
+                    "H",
+                    "Y",
+                    "W",
+                    "F",
+                    "ML",
+                    "VCS",
+                ],
                 12: [
                     "FAS",
                     "P",
@@ -4785,8 +4975,31 @@ class iProtein(Sequence):
                 7: ["HRKQNEDSTA", "G", "P", "CV", "IML", "FY", "W"],
                 8: ["HRKQSTA", "NED", "G", "P", "CV", "IML", "FY", "W"],
                 9: ["HRKQ", "NED", "ASTG", "P", "C", "IV", "MLF", "Y", "W"],
-                10: ["RKHSA", "Q", "NED", "G", "P", "C", "TIV", "MLF", "Y", "W"],
-                11: ["RKQ", "NG", "ED", "AST", "P", "C", "IV", "HML", "F", "Y", "W"],
+                10: [
+                    "RKHSA",
+                    "Q",
+                    "NED",
+                    "G",
+                    "P",
+                    "C",
+                    "TIV",
+                    "MLF",
+                    "Y",
+                    "W",
+                ],
+                11: [
+                    "RKQ",
+                    "NG",
+                    "ED",
+                    "AST",
+                    "P",
+                    "C",
+                    "IV",
+                    "HML",
+                    "F",
+                    "Y",
+                    "W",
+                ],
                 12: [
                     "RKQ",
                     "ED",
@@ -4998,7 +5211,19 @@ class iProtein(Sequence):
                 5: ["G", "IVFYW", "ALMEQRK", "P", "NDHSTC"],
                 8: ["G", "IV", "FYW", "ALM", "EQRK", "P", "ND", "HSTC"],
                 9: ["G", "IV", "FYW", "ALM", "EQRK", "P", "ND", "HS", "TC"],
-                11: ["G", "IV", "FYW", "A", "LM", "EQRK", "P", "ND", "HS", "T", "C"],
+                11: [
+                    "G",
+                    "IV",
+                    "FYW",
+                    "A",
+                    "LM",
+                    "EQRK",
+                    "P",
+                    "ND",
+                    "HS",
+                    "T",
+                    "C",
+                ],
                 13: [
                     "G",
                     "IV",
@@ -5085,7 +5310,18 @@ class iProtein(Sequence):
                 3: ["FWYCILMVAGSTPHNQ", "DE", "KR"],
                 4: ["FWY", "CILMV", "AGSTP", "EQNDHKR"],
                 8: ["FWY", "CILMV", "GA", "ST", "P", "EQND", "H", "KR"],
-                10: ["G", "FYW", "A", "ILMV", "RK", "P", "EQND", "H", "ST", "C"],
+                10: [
+                    "G",
+                    "FYW",
+                    "A",
+                    "ILMV",
+                    "RK",
+                    "P",
+                    "EQND",
+                    "H",
+                    "ST",
+                    "C",
+                ],
                 15: [
                     "G",
                     "FY",
@@ -5351,8 +5587,31 @@ class iProtein(Sequence):
                 7: ["C", "KR", "WYA", "MFILV", "DE", "QH", "GTSNP"],
                 8: ["C", "KR", "WYA", "MFILV", "D", "E", "QH", "GTSNP"],
                 9: ["C", "KR", "WYA", "MFILV", "D", "E", "QH", "TP", "GSN"],
-                10: ["C", "KR", "WY", "A", "MFILV", "D", "E", "QH", "TP", "GSN"],
-                11: ["C", "K", "R", "WY", "A", "MFILV", "D", "E", "QH", "TP", "GSN"],
+                10: [
+                    "C",
+                    "KR",
+                    "WY",
+                    "A",
+                    "MFILV",
+                    "D",
+                    "E",
+                    "QH",
+                    "TP",
+                    "GSN",
+                ],
+                11: [
+                    "C",
+                    "K",
+                    "R",
+                    "WY",
+                    "A",
+                    "MFILV",
+                    "D",
+                    "E",
+                    "QH",
+                    "TP",
+                    "GSN",
+                ],
                 12: [
                     "C",
                     "K",
@@ -5573,8 +5832,31 @@ class iProtein(Sequence):
                 7: ["AGST", "CW", "DEN", "FY", "HP", "ILMV", "KQR"],
                 8: ["AST", "CG", "DEN", "FY", "HP", "ILV", "KQR", "MW"],
                 9: ["AST", "CW", "DE", "FY", "GN", "HQ", "ILV", "KR", "MP"],
-                10: ["AST", "CW", "DE", "FY", "GN", "HQ", "IV", "KR", "LM", "P"],
-                11: ["AST", "C", "DE", "FY", "GN", "HQ", "IV", "KR", "LM", "P", "W"],
+                10: [
+                    "AST",
+                    "CW",
+                    "DE",
+                    "FY",
+                    "GN",
+                    "HQ",
+                    "IV",
+                    "KR",
+                    "LM",
+                    "P",
+                ],
+                11: [
+                    "AST",
+                    "C",
+                    "DE",
+                    "FY",
+                    "GN",
+                    "HQ",
+                    "IV",
+                    "KR",
+                    "LM",
+                    "P",
+                    "W",
+                ],
                 12: [
                     "AST",
                     "C",
@@ -5795,8 +6077,31 @@ class iProtein(Sequence):
                 7: ["AG", "CDQ", "EHNY", "FMRSW", "ILV", "K", "PT"],
                 8: ["AG", "C", "DQ", "EHNY", "FMRSW", "ILV", "K", "PT"],
                 9: ["AG", "C", "DQ", "EHNY", "FMW", "ILV", "K", "PT", "RS"],
-                10: ["A", "C", "DQ", "EHNY", "FMW", "G", "ILV", "K", "PT", "RS"],
-                11: ["A", "C", "DQ", "EHNY", "FM", "G", "ILV", "K", "PT", "RS", "W"],
+                10: [
+                    "A",
+                    "C",
+                    "DQ",
+                    "EHNY",
+                    "FMW",
+                    "G",
+                    "ILV",
+                    "K",
+                    "PT",
+                    "RS",
+                ],
+                11: [
+                    "A",
+                    "C",
+                    "DQ",
+                    "EHNY",
+                    "FM",
+                    "G",
+                    "ILV",
+                    "K",
+                    "PT",
+                    "RS",
+                    "W",
+                ],
                 12: [
                     "A",
                     "C",
@@ -6013,8 +6318,31 @@ class iProtein(Sequence):
                 7: ["FWYH", "MILV", "CATS", "P", "G", "NQDE", "RK"],
                 8: ["FWYH", "MILV", "CA", "NTS", "P", "G", "DE", "QRK"],
                 9: ["FWYH", "ML", "IV", "CA", "NTS", "P", "G", "DE", "QRK"],
-                10: ["FWY", "ML", "IV", "CA", "TS", "NH", "P", "G", "DE", "QRK"],
-                11: ["FWY", "ML", "IV", "CA", "TS", "NH", "P", "G", "D", "QE", "RK"],
+                10: [
+                    "FWY",
+                    "ML",
+                    "IV",
+                    "CA",
+                    "TS",
+                    "NH",
+                    "P",
+                    "G",
+                    "DE",
+                    "QRK",
+                ],
+                11: [
+                    "FWY",
+                    "ML",
+                    "IV",
+                    "CA",
+                    "TS",
+                    "NH",
+                    "P",
+                    "G",
+                    "D",
+                    "QE",
+                    "RK",
+                ],
                 12: [
                     "FWY",
                     "ML",
@@ -6231,8 +6559,31 @@ class iProtein(Sequence):
                 7: ["CFYW", "MLIV", "G", "P", "ATS", "NHQED", "RK"],
                 8: ["CFYW", "MLIV", "G", "P", "ATS", "NH", "QED", "RK"],
                 9: ["CFYW", "ML", "IV", "G", "P", "ATS", "NH", "QED", "RK"],
-                10: ["C", "FYW", "ML", "IV", "G", "P", "ATS", "NH", "QED", "RK"],
-                11: ["C", "FYW", "ML", "IV", "G", "P", "A", "TS", "NH", "QED", "RK"],
+                10: [
+                    "C",
+                    "FYW",
+                    "ML",
+                    "IV",
+                    "G",
+                    "P",
+                    "ATS",
+                    "NH",
+                    "QED",
+                    "RK",
+                ],
+                11: [
+                    "C",
+                    "FYW",
+                    "ML",
+                    "IV",
+                    "G",
+                    "P",
+                    "A",
+                    "TS",
+                    "NH",
+                    "QED",
+                    "RK",
+                ],
                 12: [
                     "C",
                     "FYW",
@@ -6449,8 +6800,31 @@ class iProtein(Sequence):
                 7: ["IVLMF", "WY", "C", "AH", "GP", "R", "NDQEKST"],
                 8: ["IVLMF", "WY", "C", "A", "G", "R", "Q", "NDEHKPST"],
                 9: ["IVLMF", "WY", "C", "A", "G", "P", "H", "K", "RNDQEST"],
-                10: ["IVLM", "F", "W", "Y", "C", "A", "H", "G", "RN", "DQEKPST"],
-                11: ["IVLMF", "W", "Y", "C", "A", "H", "G", "R", "N", "Q", "DEKPST"],
+                10: [
+                    "IVLM",
+                    "F",
+                    "W",
+                    "Y",
+                    "C",
+                    "A",
+                    "H",
+                    "G",
+                    "RN",
+                    "DQEKPST",
+                ],
+                11: [
+                    "IVLMF",
+                    "W",
+                    "Y",
+                    "C",
+                    "A",
+                    "H",
+                    "G",
+                    "R",
+                    "N",
+                    "Q",
+                    "DEKPST",
+                ],
                 12: [
                     "IVLM",
                     "F",
@@ -6752,8 +7126,31 @@ class iProtein(Sequence):
                 7: ["ANDGST", "RQEK", "C", "H", "ILMFYV", "P", "W"],
                 8: ["ANDGST", "RQEK", "C", "H", "ILMV", "FY", "P", "W"],
                 9: ["AGST", "RQEK", "ND", "C", "H", "ILMV", "FY", "P", "W"],
-                10: ["AGST", "RK", "ND", "C", "QE", "H", "ILMV", "FY", "P", "W"],
-                11: ["AST", "RK", "ND", "C", "QE", "G", "H", "ILMV", "FY", "P", "W"],
+                10: [
+                    "AGST",
+                    "RK",
+                    "ND",
+                    "C",
+                    "QE",
+                    "H",
+                    "ILMV",
+                    "FY",
+                    "P",
+                    "W",
+                ],
+                11: [
+                    "AST",
+                    "RK",
+                    "ND",
+                    "C",
+                    "QE",
+                    "G",
+                    "H",
+                    "ILMV",
+                    "FY",
+                    "P",
+                    "W",
+                ],
                 12: [
                     "AST",
                     "RK",
@@ -6974,8 +7371,31 @@ class iProtein(Sequence):
                 7: ["MFILV", "A", "C", "WYQHP", "GTSN", "RK", "DE"],
                 8: ["MFILV", "A", "C", "WYQHP", "G", "TSN", "RK", "DE"],
                 9: ["MF", "ILV", "A", "C", "WYQHP", "G", "TSN", "RK", "DE"],
-                10: ["MF", "ILV", "A", "C", "WYQHP", "G", "TSN", "RK", "D", "E"],
-                11: ["MF", "IL", "V", "A", "C", "WYQHP", "G", "TSN", "RK", "D", "E"],
+                10: [
+                    "MF",
+                    "ILV",
+                    "A",
+                    "C",
+                    "WYQHP",
+                    "G",
+                    "TSN",
+                    "RK",
+                    "D",
+                    "E",
+                ],
+                11: [
+                    "MF",
+                    "IL",
+                    "V",
+                    "A",
+                    "C",
+                    "WYQHP",
+                    "G",
+                    "TSN",
+                    "RK",
+                    "D",
+                    "E",
+                ],
                 12: [
                     "MF",
                     "IL",
@@ -7136,8 +7556,31 @@ class iProtein(Sequence):
                 7: ["IMVL", "FWY", "G", "P", "CAST", "NHQED", "RK"],
                 8: ["IMV", "L", "FWY", "G", "P", "CAST", "NHQED", "RK"],
                 9: ["IMV", "L", "FWY", "G", "P", "C", "AST", "NHQED", "RK"],
-                10: ["IMV", "L", "FWY", "G", "P", "C", "A", "STNH", "RKQE", "D"],
-                11: ["IMV", "L", "FWY", "G", "P", "C", "A", "STNH", "RKQ", "E", "D"],
+                10: [
+                    "IMV",
+                    "L",
+                    "FWY",
+                    "G",
+                    "P",
+                    "C",
+                    "A",
+                    "STNH",
+                    "RKQE",
+                    "D",
+                ],
+                11: [
+                    "IMV",
+                    "L",
+                    "FWY",
+                    "G",
+                    "P",
+                    "C",
+                    "A",
+                    "STNH",
+                    "RKQ",
+                    "E",
+                    "D",
+                ],
                 12: [
                     "IMV",
                     "L",
@@ -7751,21 +8194,50 @@ class iProtein(Sequence):
                 4,
                 0,
             ],  # V
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # -
+            [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+            ],  # -
         ]
         AA = "ARNDCQEGHILKMFPSTWYV-"
         myDict = {}
         for i in range(len(AA)):
             myDict[AA[i]] = i
         maxValue, minValue = 11, -4
-        return (blosum62[myDict[a]][myDict[b]] - minValue) / (maxValue - minValue)
+        return (blosum62[myDict[a]][myDict[b]] - minValue) / (
+            maxValue - minValue
+        )
 
     def CalculateDistance(self, sequence1, sequence2):
         if len(sequence1) != len(sequence2):
-            self.error_msg = "KNN descriptor need fasta sequence with equal length."
+            self.error_msg = (
+                "KNN descriptor need fasta sequence with equal length."
+            )
             return 1
         distance = 1 - sum(
-            [self.Sim(sequence1[i], sequence2[i]) for i in range(len(sequence1))]
+            [
+                self.Sim(sequence1[i], sequence2[i])
+                for i in range(len(sequence1))
+            ]
         ) / len(sequence1)
         return distance
 
@@ -7786,7 +8258,9 @@ class iProtein(Sequence):
             self.encoding_array = np.array([])
 
             if not self.is_equal:
-                self.error_msg = "KNN descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "KNN descriptor need fasta sequence with equal length."
+                )
                 return False
 
             topK_values = [
@@ -7874,16 +8348,23 @@ class iProtein(Sequence):
                             [
                                 int(training_data[j][2]),
                                 distance_dict.get(
-                                    ":".join(sorted([name, training_data[j][0]])), 1
+                                    ":".join(
+                                        sorted([name, training_data[j][0]])
+                                    ),
+                                    1,
                                 ),
                             ]
                         )
 
                 tmp_distance_list = np.array(tmp_distance_list)
-                tmp_distance_list = tmp_distance_list[np.lexsort(tmp_distance_list.T)]
+                tmp_distance_list = tmp_distance_list[
+                    np.lexsort(tmp_distance_list.T)
+                ]
 
                 for j in topK_numbers:
-                    code += self.CalculateContent(tmp_distance_list, j, tmp_label_sets)
+                    code += self.CalculateContent(
+                        tmp_distance_list, j, tmp_label_sets
+                    )
                 encodings.append(code)
 
             encodings = np.array(encodings)
@@ -7980,15 +8461,35 @@ class iDNA(Sequence):
             "CKSNAP type 1": {"kspace": 3},
             "CKSNAP type 2": {"kspace": 3},
             "DPCP": {"Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise"},
-            "DPCP type2": {"Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise"},
+            "DPCP type2": {
+                "Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise"
+            },
             "TPCP": {"Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)"},
             "TPCP type2": {"Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)"},
-            "DAC": {"Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise", "nlag": 3},
-            "DCC": {"Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise", "nlag": 3},
-            "DACC": {"Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise", "nlag": 3},
-            "TAC": {"Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)", "nlag": 3},
-            "TCC": {"Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)", "nlag": 3},
-            "TACC": {"Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)", "nlag": 3},
+            "DAC": {
+                "Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise",
+                "nlag": 3,
+            },
+            "DCC": {
+                "Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise",
+                "nlag": 3,
+            },
+            "DACC": {
+                "Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise",
+                "nlag": 3,
+            },
+            "TAC": {
+                "Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)",
+                "nlag": 3,
+            },
+            "TCC": {
+                "Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)",
+                "nlag": 3,
+            },
+            "TACC": {
+                "Tri-DNA-Phychem": "Dnase I;Bendability (DNAse)",
+                "nlag": 3,
+            },
             "PseDNC": {
                 "Di-DNA-Phychem": "Twist;Tilt;Roll;Shift;Slide;Rise",
                 "weight": 0.05,
@@ -8426,7 +8927,14 @@ class iDNA(Sequence):
             },
             "SCPseTNC": {"DNA": ["Dnase I", "Bendability (DNAse)"], "RNA": []},
         }
-        self.myKmer = {"DAC": 2, "DCC": 2, "DACC": 2, "TAC": 3, "TCC": 3, "TACC": 3}
+        self.myKmer = {
+            "DAC": 2,
+            "DCC": 2,
+            "DACC": 2,
+            "TAC": 3,
+            "TCC": 3,
+            "TACC": 3,
+        }
         self.myDataFile = {
             "DAC": {"DNA": "didnaPhyche.data", "RNA": "dirnaPhyche.data"},
             "DCC": {"DNA": "didnaPhyche.data", "RNA": "dirnaPhyche.data"},
@@ -8672,7 +9180,9 @@ class iDNA(Sequence):
         # copy parameters
         if descriptor in self.__default_para_dict:
             for key in self.__default_para_dict[descriptor]:
-                self.__default_para[key] = self.__default_para_dict[descriptor][key]
+                self.__default_para[key] = self.__default_para_dict[
+                    descriptor
+                ][key]
 
         if descriptor in self.__cmd_dict:
             if descriptor in ["DAC", "TAC"]:
@@ -8710,8 +9220,10 @@ class iDNA(Sequence):
                 "SCPseDNC",
                 "SCPseTNC",
             ]:
-                my_property_name, my_property_value, ok = self.__check_Pse_arguments(
-                    descriptor, self.sequence_type, self.__default_para
+                my_property_name, my_property_value, ok = (
+                    self.__check_Pse_arguments(
+                        descriptor, self.sequence_type, self.__default_para
+                    )
                 )
             cmd = self.__cmd_dict[descriptor]
             status = eval(cmd)
@@ -8819,7 +9331,11 @@ class iDNA(Sequence):
             encoding.append(header)
 
             for elem in self.fasta_list:
-                name, sequence, label = elem[0], re.sub("-", "", elem[1]), elem[2]
+                name, sequence, label = (
+                    elem[0],
+                    re.sub("-", "", elem[1]),
+                    elem[2],
+                )
                 kmers = self.kmerArray(sequence, k)
                 tmp_dict = template_dict.copy()
                 for kmer in kmers:
@@ -8847,7 +9363,9 @@ class iDNA(Sequence):
 
     def GetKmerDict(self, piRNAletter, k):
         kmerlst = []
-        partkmers = list(itertools.combinations_with_replacement(piRNAletter, k))
+        partkmers = list(
+            itertools.combinations_with_replacement(piRNAletter, k)
+        )
         for element in partkmers:
             elelst = set(itertools.permutations(element, k))
             strlst = ["".join(ele) for ele in elelst]
@@ -8860,7 +9378,9 @@ class iDNA(Sequence):
         kmerdict = self.GetKmerDict(piRNAletter, k)
         X = []
         for sequence in instances:
-            vector = self.GetSubsequenceProfileVector(sequence, kmerdict, k, delta)
+            vector = self.GetSubsequenceProfileVector(
+                sequence, kmerdict, k, delta
+            )
             X.append(vector)
         X = np.array(X)
         return X
@@ -8894,7 +9414,9 @@ class iDNA(Sequence):
             instances = [elem[1] for elem in self.fasta_list]
 
             code = self.GetSubsequenceProfile(instances, NN_list, k, delta)
-            info_list = np.array([[item[0], item[2]] for item in self.fasta_list])
+            info_list = np.array(
+                [[item[0], item[2]] for item in self.fasta_list]
+            )
             code = np.hstack((info_list, code))
             encoding = np.vstack((header, code))
 
@@ -9041,7 +9563,9 @@ class iDNA(Sequence):
     def _ANF(self):
         try:
             if not self.is_equal:
-                self.error_msg = "ANF descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "ANF descriptor need fasta sequence with equal length."
+                )
                 return False
             encodings = []
             header = ["SampleName"]
@@ -9053,7 +9577,9 @@ class iDNA(Sequence):
                 name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence)):
-                    code.append(sequence[0 : j + 1].count(sequence[j]) / (j + 1))
+                    code.append(
+                        sequence[0 : j + 1].count(sequence[j]) / (j + 1)
+                    )
                 encodings.append(code)
             encodings = np.array(encodings)
             self.encodings = pd.DataFrame(
@@ -9069,7 +9595,9 @@ class iDNA(Sequence):
     def _NCP(self):
         try:
             if not self.is_equal:
-                self.error_msg = "NCP descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "NCP descriptor need fasta sequence with equal length."
+                )
                 return False
             chemical_property = {
                 "A": [1, 1, 1],
@@ -9128,7 +9656,9 @@ class iDNA(Sequence):
                     if j < len(sequence) and j + window <= len(sequence):
                         count = Counter(sequence[j : j + window])
                         for key in count:
-                            count[key] = count[key] / len(sequence[j : j + window])
+                            count[key] = count[key] / len(
+                                sequence[j : j + window]
+                            )
                         for aa in AA:
                             code.append(count[aa])
                 encodings.append(code)
@@ -9310,17 +9840,23 @@ class iDNA(Sequence):
             EIIPxyz = {}
             for triN in trincleotides:
                 EIIPxyz[triN] = (
-                    EIIP_dict[triN[0]] + EIIP_dict[triN[1]] + EIIP_dict[triN[2]]
+                    EIIP_dict[triN[0]]
+                    + EIIP_dict[triN[1]]
+                    + EIIP_dict[triN[2]]
                 )
 
             encodings = []
-            header = ["SampleName"] + ["PseEIIP_{0}".format(i) for i in trincleotides]
+            header = ["SampleName"] + [
+                "PseEIIP_{0}".format(i) for i in trincleotides
+            ]
             encodings.append(header)
 
             for i in fastas:
                 name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
-                trincleotide_frequency = self.TriNcleotideComposition(sequence, base)
+                trincleotide_frequency = self.TriNcleotideComposition(
+                    sequence, base
+                )
                 code = code + [
                     EIIPxyz[triN] * trincleotide_frequency[triN]
                     for triN in trincleotides
@@ -9379,7 +9915,9 @@ class iDNA(Sequence):
     def _DBE(self):
         try:
             if not self.is_equal:
-                self.error_msg = "DBE descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "DBE descriptor need fasta sequence with equal length."
+                )
                 return False
 
             AA_dict = {
@@ -9438,7 +9976,9 @@ class iDNA(Sequence):
 
             encodings = []
             header = ["SampleName"]
-            header += ["LPDF_%s" % i for i in range(1, len(self.fasta_list[0][1]))]
+            header += [
+                "LPDF_%s" % i for i in range(1, len(self.fasta_list[0][1]))
+            ]
             encodings.append(header)
 
             for i in self.fasta_list:
@@ -9473,7 +10013,9 @@ class iDNA(Sequence):
                 }
                 for j in range(1, len(sequence)):
                     dinucleotide_dict[sequence[j] + sequence[j - 1]] += 1
-                    code.append(dinucleotide_dict[sequence[j] + sequence[j - 1]] / j)
+                    code.append(
+                        dinucleotide_dict[sequence[j] + sequence[j - 1]] / j
+                    )
                 encodings.append(code)
             encodings = np.array(encodings)
             self.encodings = pd.DataFrame(
@@ -9490,21 +10032,29 @@ class iDNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
                 print(self.__default_para)
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
 
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[0] + r'\data\%s' %file_name if platform.system() == 'Windows' else os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' %file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             base = "ACGT"
@@ -9515,7 +10065,9 @@ class iDNA(Sequence):
                 for n1 in base
                 for n2 in base
             ]
-            header = ["SampleName"] + ["DPCP_{0}".format(i) for i in dinucleotides]
+            header = ["SampleName"] + [
+                "DPCP_{0}".format(i) for i in dinucleotides
+            ]
             encodings.append(header)
 
             AADict = {}
@@ -9527,8 +10079,13 @@ class iDNA(Sequence):
                 code = [name]
                 tmpCode = [0] * 16
                 for j in range(len(sequence) - 2 + 1):
-                    tmpCode[AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]] = (
-                        tmpCode[AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]] + 1
+                    tmpCode[
+                        AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]
+                    ] = (
+                        tmpCode[
+                            AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]
+                        ]
+                        + 1
                     )
                 if sum(tmpCode) != 0:
                     tmpCode = [i / sum(tmpCode) for i in tmpCode]
@@ -9555,27 +10112,33 @@ class iDNA(Sequence):
     def _DPCP_type2(self):
         try:
             if not self.is_equal:
-                self.error_msg = (
-                    "DPCP type2 descriptor need fasta sequence with equal length."
-                )
+                self.error_msg = "DPCP type2 descriptor need fasta sequence with equal length."
                 return False
 
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
 
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[0] + r'\data\%s' %file_name if platform.system() == 'Windows' else os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' %file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             AA = "ACGT"
@@ -9598,7 +10161,9 @@ class iDNA(Sequence):
                     for j in range(len(sequence) - 1):
                         if sequence[j : j + 2] in AADict:
                             code.append(
-                                property_dict[p_name][AADict[sequence[j : j + 2]]]
+                                property_dict[p_name][
+                                    AADict[sequence[j : j + 2]]
+                                ]
                             )
                         else:
                             code.append(0)
@@ -9621,13 +10186,17 @@ class iDNA(Sequence):
 
             try:
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
                 property_name = property_dict.keys()
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             AA = "ACGT"
@@ -9639,7 +10208,9 @@ class iDNA(Sequence):
                 for aa2 in AA
                 for aa3 in AA
             ]
-            header = ["SampleName"] + ["TPCP_{0}".format(i) for i in triPeptides]
+            header = ["SampleName"] + [
+                "TPCP_{0}".format(i) for i in triPeptides
+            ]
             encodings.append(header)
 
             AADict = {}
@@ -9688,23 +10259,27 @@ class iDNA(Sequence):
     def _TPCP_type2(self):
         try:
             if not self.is_equal:
-                self.error_msg = (
-                    "TPCP type2 descriptor need fasta sequence with equal length."
-                )
+                self.error_msg = "TPCP type2 descriptor need fasta sequence with equal length."
                 return False
 
             if self.sequence_type == "DNA":
                 file_name = "tridnaPhyche.data"
-                property_name = self.__default_para["Tri-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Tri-DNA-Phychem"].split(
+                    ";"
+                )
 
             try:
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             AA = "ACGT"
@@ -9716,7 +10291,9 @@ class iDNA(Sequence):
             encodings.append(header)
 
             AADict = {}
-            AA_list = [aa1 + aa2 + aa3 for aa1 in AA for aa2 in AA for aa3 in AA]
+            AA_list = [
+                aa1 + aa2 + aa3 for aa1 in AA for aa2 in AA for aa3 in AA
+            ]
             for i in range(len(AA_list)):
                 AADict[AA_list[i]] = i
 
@@ -9727,7 +10304,9 @@ class iDNA(Sequence):
                     for j in range(len(sequence) - 2):
                         if sequence[j : j + 3] in AADict:
                             code.append(
-                                property_dict[p_name][AADict[sequence[j : j + 3]]]
+                                property_dict[p_name][
+                                    AADict[sequence[j : j + 3]]
+                                ]
                             )
                         else:
                             code.append(0)
@@ -9747,7 +10326,9 @@ class iDNA(Sequence):
         try:
             NA = "ACGT"
             dinucleotide_list = [a1 + a2 for a1 in NA for a2 in NA]
-            trinucleotide_list = [a1 + a2 + a3 for a1 in NA for a2 in NA for a3 in NA]
+            trinucleotide_list = [
+                a1 + a2 + a3 for a1 in NA for a2 in NA for a3 in NA
+            ]
             dinucleotide_dict = {}
             trinucleotide_dict = {}
             for elem in dinucleotide_list:
@@ -9757,8 +10338,12 @@ class iDNA(Sequence):
 
             encodings = []
             header = ["SampleName"]
-            header += ["MMI_%s" % elem for elem in sorted(dinucleotide_dict.keys())]
-            header += ["MMI_%s" % elem for elem in sorted(trinucleotide_dict.keys())]
+            header += [
+                "MMI_%s" % elem for elem in sorted(dinucleotide_dict.keys())
+            ]
+            header += [
+                "MMI_%s" % elem for elem in sorted(trinucleotide_dict.keys())
+            ]
             encodings.append(header)
 
             for i in self.fasta_list:
@@ -9792,11 +10377,15 @@ class iDNA(Sequence):
                     f3_dict[key] /= len(sequence) - 2
 
                 for key in sorted(f2_dict.keys()):
-                    if f2_dict[key] != 0 and f1_dict[key[0]] * f1_dict[key[1]] != 0:
+                    if (
+                        f2_dict[key] != 0
+                        and f1_dict[key[0]] * f1_dict[key[1]] != 0
+                    ):
                         code.append(
                             f2_dict[key]
                             * math.log(
-                                f2_dict[key] / (f1_dict[key[0]] * f1_dict[key[1]])
+                                f2_dict[key]
+                                / (f1_dict[key[0]] * f1_dict[key[1]])
                             )
                         )
                     else:
@@ -9810,16 +10399,22 @@ class iDNA(Sequence):
                         and f1_dict[key[0]] * f1_dict[key[1]] != 0
                     ):
                         element_1 = f2_dict[key[0:2]] * math.log(
-                            f2_dict[key[0:2]] / (f1_dict[key[0]] * f1_dict[key[1]])
+                            f2_dict[key[0:2]]
+                            / (f1_dict[key[0]] * f1_dict[key[1]])
                         )
                     if f2_dict[key[0] + key[2]] != 0 and f1_dict[key[2]] != 0:
                         element_2 = (
                             f2_dict[key[0] + key[2]] / f1_dict[key[2]]
-                        ) * math.log(f2_dict[key[0] + key[2]] / f1_dict[key[2]])
-                    if f2_dict[key[1:3]] != 0 and f3_dict[key] / f2_dict[key[1:3]] != 0:
-                        element_3 = (f3_dict[key] / f2_dict[key[1:3]]) * math.log(
-                            f3_dict[key] / f2_dict[key[1:3]]
+                        ) * math.log(
+                            f2_dict[key[0] + key[2]] / f1_dict[key[2]]
                         )
+                    if (
+                        f2_dict[key[1:3]] != 0
+                        and f3_dict[key] / f2_dict[key[1:3]] != 0
+                    ):
+                        element_3 = (
+                            f3_dict[key] / f2_dict[key[1:3]]
+                        ) * math.log(f3_dict[key] / f2_dict[key[1:3]])
                     code.append(element_1 + element_2 - element_3)
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -9836,7 +10431,9 @@ class iDNA(Sequence):
     def _PS2(self):
         try:
             if not self.is_equal:
-                self.error_msg = "PS2 descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "PS2 descriptor need fasta sequence with equal length."
+                )
                 return False
             AA = "ACGT"
             AA_list = [a1 + a2 for a1 in AA for a2 in AA]
@@ -9871,7 +10468,9 @@ class iDNA(Sequence):
     def _PS3(self):
         try:
             if not self.is_equal:
-                self.error_msg = "PS3 descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "PS3 descriptor need fasta sequence with equal length."
+                )
                 return False
             AA = "ACGT"
             AA_list = [a1 + a2 + a3 for a1 in AA for a2 in AA for a3 in AA]
@@ -9906,11 +10505,17 @@ class iDNA(Sequence):
     def _PS4(self):
         try:
             if not self.is_equal:
-                self.error_msg = "PS4 descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "PS4 descriptor need fasta sequence with equal length."
+                )
                 return False
             AA = "ACGT"
             AA_list = [
-                a1 + a2 + a3 + a4 for a1 in AA for a2 in AA for a3 in AA for a4 in AA
+                a1 + a2 + a3 + a4
+                for a1 in AA
+                for a2 in AA
+                for a3 in AA
+                for a4 in AA
             ]
             AA_dict = {}
             for i in range(len(AA_list)):
@@ -10297,7 +10902,8 @@ class iDNA(Sequence):
                     for pos in range(1, 4):
                         for elem in ["x", "y", "z"]:
                             header.append(
-                                "Zcurve144_%s_%s%s.%s" % (pos, base, base1, elem)
+                                "Zcurve144_%s_%s%s.%s"
+                                % (pos, base, base1, elem)
                             )
             encodings.append(header)
 
@@ -10411,19 +11017,27 @@ class iDNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[0] + r'\data\%s' %file_name if platform.system() == 'Windows' else os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' %file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             nlag = self.__default_para["nlag"]
 
@@ -10464,7 +11078,9 @@ class iDNA(Sequence):
                                         )
                                         * float(
                                             property_dict[p_name][
-                                                AADict[sequence[j + d : j + d + 2]]
+                                                AADict[
+                                                    sequence[j + d : j + d + 2]
+                                                ]
                                             ]
                                         )
                                         for j in range(N - d)
@@ -10491,21 +11107,29 @@ class iDNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[
                 #                 0] + r'\data\%s' % file_name if platform.system() == 'Windows' else \
                 # os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' % file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             nlag = self.__default_para["nlag"]
 
@@ -10536,7 +11160,9 @@ class iDNA(Sequence):
                     pmean = (
                         sum(
                             [
-                                property_dict[p_name][AADict[sequence[i : i + 2]]]
+                                property_dict[p_name][
+                                    AADict[sequence[i : i + 2]]
+                                ]
                                 for i in range(N)
                             ]
                         )
@@ -10595,21 +11221,29 @@ class iDNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[
                 #                 0] + r'\data\%s' % file_name if platform.system() == 'Windows' else \
                 #     os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' % file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             nlag = self.__default_para["nlag"]
 
@@ -10641,7 +11275,9 @@ class iDNA(Sequence):
                     pmean = (
                         sum(
                             [
-                                property_dict[p_name][AADict[sequence[i : i + 2]]]
+                                property_dict[p_name][
+                                    AADict[sequence[i : i + 2]]
+                                ]
                                 for i in range(N)
                             ]
                         )
@@ -10727,7 +11363,9 @@ class iDNA(Sequence):
                         for j in range(len(sequence) - kmer - l + 1):
                             acValue = acValue + (
                                 float(
-                                    myPropertyValue[p][myIndex[sequence[j : j + kmer]]]
+                                    myPropertyValue[p][
+                                        myIndex[sequence[j : j + kmer]]
+                                    ]
                                 )
                                 - meanValue
                             ) * (
@@ -10780,10 +11418,14 @@ class iDNA(Sequence):
                     # for j in range(len(sequence) - kmer):
                     for j in range(len(sequence) - kmer + 1):
                         meanP1 = meanP1 + float(
-                            myPropertyValue[pair[0]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[0]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                         meanP2 = meanP2 + float(
-                            myPropertyValue[pair[1]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[1]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                     # meanP1 = meanP1 / (len(sequence) - kmer)
                     # meanP2 = meanP2 / (len(sequence) - kmer)
@@ -10863,7 +11505,9 @@ class iDNA(Sequence):
                             # acValue = acValue + (float(myPropertyValue[p][myIndex[sequence[j: j+kmer]]]) - meanValue) * (float(myPropertyValue[p][myIndex[sequence[j+l:j+l+kmer]]]))
                             acValue = acValue + (
                                 float(
-                                    myPropertyValue[p][myIndex[sequence[j : j + kmer]]]
+                                    myPropertyValue[p][
+                                        myIndex[sequence[j : j + kmer]]
+                                    ]
                                 )
                                 - meanValue
                             ) * (
@@ -10884,10 +11528,14 @@ class iDNA(Sequence):
                     # for j in range(len(sequence) - kmer):
                     for j in range(len(sequence) - kmer + 1):
                         meanP1 = meanP1 + float(
-                            myPropertyValue[pair[0]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[0]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                         meanP2 = meanP2 + float(
-                            myPropertyValue[pair[1]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[1]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                     # meanP1 = meanP1 / (len(sequence) - kmer)
                     # meanP2 = meanP2 / (len(sequence) - kmer)
@@ -10930,7 +11578,8 @@ class iDNA(Sequence):
         baseSymbol = "ACGT"
         myFrequency = {}
         for pep in [
-            "".join(i) for i in list(itertools.product(baseSymbol, repeat=kmer))
+            "".join(i)
+            for i in list(itertools.product(baseSymbol, repeat=kmer))
         ]:
             myFrequency[pep] = 0
         for i in range(len(sequence) - kmer + 1):
@@ -10941,7 +11590,9 @@ class iDNA(Sequence):
             myFrequency[key] = myFrequency[key] / (len(sequence) - kmer + 1)
         return myFrequency
 
-    def correlationFunction(self, pepA, pepB, myIndex, myPropertyName, myPropertyValue):
+    def correlationFunction(
+        self, pepA, pepB, myIndex, myPropertyName, myPropertyValue
+    ):
         CC = 0
         for p in myPropertyName:
             CC = (
@@ -10965,7 +11616,13 @@ class iDNA(Sequence):
         return CC
 
     def get_theta_array(
-        self, myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, kmer
+        self,
+        myIndex,
+        myPropertyName,
+        myPropertyValue,
+        lamadaValue,
+        sequence,
+        kmer,
     ):
         thetaArray = []
         for tmpLamada in range(lamadaValue):
@@ -10982,7 +11639,13 @@ class iDNA(Sequence):
         return thetaArray
 
     def get_theta_array_type2(
-        self, myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, kmer
+        self,
+        myIndex,
+        myPropertyName,
+        myPropertyValue,
+        lamadaValue,
+        sequence,
+        kmer,
     ):
         thetaArray = []
         for tmpLamada in range(lamadaValue):
@@ -11017,15 +11680,22 @@ class iDNA(Sequence):
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pair in sorted(myIndex.keys()):
                     code.append(
-                        dipeptideFrequency[pair] / (1 + weight * sum(thetaArray))
+                        dipeptideFrequency[pair]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(17, 16 + lamadaValue + 1):
                     code.append(
-                        (weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 17])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -11057,15 +11727,22 @@ class iDNA(Sequence):
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pair in sorted(myIndex.keys()):
                     code.append(
-                        dipeptideFrequency[pair] / (1 + weight * sum(thetaArray))
+                        dipeptideFrequency[pair]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(17, 16 + lamadaValue + 1):
                     code.append(
-                        (weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 17])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -11099,15 +11776,22 @@ class iDNA(Sequence):
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 3
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    3,
                 )
                 for pep in sorted(myIndex.keys()):
                     code.append(
-                        tripeptideFrequency[pep] / (1 + weight * sum(thetaArray))
+                        tripeptideFrequency[pep]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(65, 64 + lamadaValue + 1):
                     code.append(
-                        (weight * thetaArray[k - 65]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 65])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -11140,15 +11824,22 @@ class iDNA(Sequence):
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array_type2(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pair in sorted(myIndex.keys()):
                     code.append(
-                        dipeptideFrequency[pair] / (1 + weight * sum(thetaArray))
+                        dipeptideFrequency[pair]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(17, 16 + lamadaValue * len(myPropertyName) + 1):
                     code.append(
-                        (weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 17])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -11180,15 +11871,22 @@ class iDNA(Sequence):
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array_type2(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 3
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    3,
                 )
                 for pep in sorted(myIndex.keys()):
                     code.append(
-                        tripeptideFrequency[pep] / (1 + weight * sum(thetaArray))
+                        tripeptideFrequency[pep]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(65, 64 + lamadaValue * len(myPropertyName) + 1):
                     code.append(
-                        (weight * thetaArray[k - 65]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 65])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -11226,21 +11924,33 @@ class iDNA(Sequence):
                 code = [name]
                 kmerFreauency = self.get_kmer_frequency(sequence, kmer)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pep in sorted(
                     [
                         "".join(j)
-                        for j in list(itertools.product(baseSymbol, repeat=kmer))
+                        for j in list(
+                            itertools.product(baseSymbol, repeat=kmer)
+                        )
                     ]
                 ):
-                    code.append(kmerFreauency[pep] / (1 + weight * sum(thetaArray)))
+                    code.append(
+                        kmerFreauency[pep] / (1 + weight * sum(thetaArray))
+                    )
                 for k in range(
                     len(baseSymbol) ** kmer + 1,
                     len(baseSymbol) ** kmer + lamadaValue + 1,
                 ):
                     code.append(
-                        (weight * thetaArray[k - (len(baseSymbol) ** kmer + 1)])
+                        (
+                            weight
+                            * thetaArray[k - (len(baseSymbol) ** kmer + 1)]
+                        )
                         / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
@@ -11331,11 +12041,15 @@ class iDNA(Sequence):
                             code.append(0)
                         else:
                             p_num, n_num = positive_number, negative_number
-                            po_number = matrix_po[j][order[sequence[j : j + 3]]]
+                            po_number = matrix_po[j][
+                                order[sequence[j : j + 3]]
+                            ]
                             if i[0] in positive_key and po_number > 0:
                                 po_number -= 1
                                 p_num -= 1
-                            ne_number = matrix_ne[j][order[sequence[j : j + 3]]]
+                            ne_number = matrix_ne[j][
+                                order[sequence[j : j + 3]]
+                            ]
                             if i[0] in negative_key and ne_number > 0:
                                 ne_number -= 1
                                 n_num -= 1
@@ -11423,11 +12137,15 @@ class iDNA(Sequence):
                             code.append(0)
                         else:
                             p_num, n_num = positive_number, negative_number
-                            po_number = matrix_po[j][order[sequence[j : j + 3]]]
+                            po_number = matrix_po[j][
+                                order[sequence[j : j + 3]]
+                            ]
                             if i[0] in positive_key and po_number > 0:
                                 po_number -= 1
                                 p_num -= 1
-                            ne_number = matrix_ne[j][order[sequence[j : j + 3]]]
+                            ne_number = matrix_ne[j][
+                                order[sequence[j : j + 3]]
+                            ]
                             if i[0] in negative_key and ne_number > 0:
                                 ne_number -= 1
                                 n_num -= 1
@@ -11460,7 +12178,9 @@ class iDNA(Sequence):
         for i in range(len(AA)):
             myDict[AA[i]] = i
         maxValue, minValue = 2, -1
-        return (score_matrix[myDict[a]][myDict[b]] - minValue) / (maxValue - minValue)
+        return (score_matrix[myDict[a]][myDict[b]] - minValue) / (
+            maxValue - minValue
+        )
 
     def CalculateContent(self, myDistance, j, myLabelSets):
         content = []
@@ -11475,10 +12195,15 @@ class iDNA(Sequence):
 
     def CalculateDistanceN(self, sequence1, sequence2):
         if len(sequence1) != len(sequence2):
-            self.error_msg = "KNN descriptor need fasta sequence with equal length."
+            self.error_msg = (
+                "KNN descriptor need fasta sequence with equal length."
+            )
             return 1
         distance = 1 - sum(
-            [self.SimN(sequence1[i], sequence2[i]) for i in range(len(sequence1))]
+            [
+                self.SimN(sequence1[i], sequence2[i])
+                for i in range(len(sequence1))
+            ]
         ) / len(sequence1)
         return distance
 
@@ -11488,7 +12213,9 @@ class iDNA(Sequence):
             self.encoding_array = np.array([])
 
             if not self.is_equal:
-                self.error_msg = "KNN descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "KNN descriptor need fasta sequence with equal length."
+                )
                 return False
 
             topK_values = [
@@ -11576,16 +12303,23 @@ class iDNA(Sequence):
                             [
                                 int(training_data[j][2]),
                                 distance_dict.get(
-                                    ":".join(sorted([name, training_data[j][0]])), 1
+                                    ":".join(
+                                        sorted([name, training_data[j][0]])
+                                    ),
+                                    1,
                                 ),
                             ]
                         )
 
                 tmp_distance_list = np.array(tmp_distance_list)
-                tmp_distance_list = tmp_distance_list[np.lexsort(tmp_distance_list.T)]
+                tmp_distance_list = tmp_distance_list[
+                    np.lexsort(tmp_distance_list.T)
+                ]
 
                 for j in topK_numbers:
-                    code += self.CalculateContent(tmp_distance_list, j, tmp_label_sets)
+                    code += self.CalculateContent(
+                        tmp_distance_list, j, tmp_label_sets
+                    )
                 encodings.append(code)
 
             encodings = np.array(encodings)
@@ -12109,7 +12843,14 @@ class iRNA(Sequence):
             },
             "SCPseTNC": {"DNA": ["Dnase I", "Bendability (DNAse)"], "RNA": []},
         }
-        self.myKmer = {"DAC": 2, "DCC": 2, "DACC": 2, "TAC": 3, "TCC": 3, "TACC": 3}
+        self.myKmer = {
+            "DAC": 2,
+            "DCC": 2,
+            "DACC": 2,
+            "TAC": 3,
+            "TCC": 3,
+            "TACC": 3,
+        }
         self.myDataFile = {
             "DAC": {"DNA": "didnaPhyche.data", "RNA": "dirnaPhyche.data"},
             "DCC": {"DNA": "didnaPhyche.data", "RNA": "dirnaPhyche.data"},
@@ -12341,7 +13082,9 @@ class iRNA(Sequence):
         # copy parameters
         if descriptor in self.__default_para_dict:
             for key in self.__default_para_dict[descriptor]:
-                self.__default_para[key] = self.__default_para_dict[descriptor][key]
+                self.__default_para[key] = self.__default_para_dict[
+                    descriptor
+                ][key]
 
         if descriptor in self.__cmd_dict:
             if descriptor in ["DAC", "TAC"]:
@@ -12379,8 +13122,10 @@ class iRNA(Sequence):
                 "SCPseDNC",
                 "SCPseTNC",
             ]:
-                my_property_name, my_property_value, ok = self.__check_Pse_arguments(
-                    descriptor, self.sequence_type, self.__default_para
+                my_property_name, my_property_value, ok = (
+                    self.__check_Pse_arguments(
+                        descriptor, self.sequence_type, self.__default_para
+                    )
                 )
             cmd = self.__cmd_dict[descriptor]
             status = eval(cmd)
@@ -12494,7 +13239,9 @@ class iRNA(Sequence):
                     for key in tmp_dict:
                         if self.mismatch_count(kmer, key) <= m:
                             tmp_dict[key] += 1
-                code = [name] + [tmp_dict[key] for key in sorted(tmp_dict.keys())]
+                code = [name] + [
+                    tmp_dict[key] for key in sorted(tmp_dict.keys())
+                ]
                 encoding.append(code)
             encoding = np.array(encoding)
             self.encodings = pd.DataFrame(
@@ -12511,7 +13258,9 @@ class iRNA(Sequence):
 
     def GetKmerDict(self, piRNAletter, k):
         kmerlst = []
-        partkmers = list(itertools.combinations_with_replacement(piRNAletter, k))
+        partkmers = list(
+            itertools.combinations_with_replacement(piRNAletter, k)
+        )
         for element in partkmers:
             elelst = set(itertools.permutations(element, k))
             strlst = ["".join(ele) for ele in elelst]
@@ -12524,7 +13273,9 @@ class iRNA(Sequence):
         kmerdict = self.GetKmerDict(piRNAletter, k)
         X = []
         for sequence in instances:
-            vector = self.GetSubsequenceProfileVector(sequence, kmerdict, k, delta)
+            vector = self.GetSubsequenceProfileVector(
+                sequence, kmerdict, k, delta
+            )
             X.append(vector)
         X = np.array(X)
         return X
@@ -12558,7 +13309,9 @@ class iRNA(Sequence):
             instances = [elem[1] for elem in self.fasta_list]
 
             code = self.GetSubsequenceProfile(instances, NN_list, k, delta)
-            info_list = np.array([[item[0], item[2]] for item in self.fasta_list])
+            info_list = np.array(
+                [[item[0], item[2]] for item in self.fasta_list]
+            )
             code = np.hstack((info_list, code))
             encoding = np.vstack((header, code))
 
@@ -12706,7 +13459,9 @@ class iRNA(Sequence):
     def _ANF(self):
         try:
             if not self.is_equal:
-                self.error_msg = "ANF descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "ANF descriptor need fasta sequence with equal length."
+                )
                 return False
             encodings = []
             header = ["SampleName"]
@@ -12718,7 +13473,9 @@ class iRNA(Sequence):
                 name, sequence, _ = i[0], i[1], i[2]
                 code = [name]
                 for j in range(len(sequence)):
-                    code.append(sequence[0 : j + 1].count(sequence[j]) / (j + 1))
+                    code.append(
+                        sequence[0 : j + 1].count(sequence[j]) / (j + 1)
+                    )
                 encodings.append(code)
             encodings = np.array(encodings)
             self.encodings = pd.DataFrame(
@@ -12734,7 +13491,9 @@ class iRNA(Sequence):
     def _NCP(self):
         try:
             if not self.is_equal:
-                self.error_msg = "NCP descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "NCP descriptor need fasta sequence with equal length."
+                )
                 return False
             chemical_property = {
                 "A": [1, 1, 1],
@@ -12794,7 +13553,9 @@ class iRNA(Sequence):
                     if j < len(sequence) and j + window <= len(sequence):
                         count = Counter(sequence[j : j + window])
                         for key in count:
-                            count[key] = count[key] / len(sequence[j : j + window])
+                            count[key] = count[key] / len(
+                                sequence[j : j + window]
+                            )
                         for aa in AA:
                             code.append(count[aa])
                 encodings.append(code)
@@ -12976,17 +13737,23 @@ class iRNA(Sequence):
             EIIPxyz = {}
             for triN in trincleotides:
                 EIIPxyz[triN] = (
-                    EIIP_dict[triN[0]] + EIIP_dict[triN[1]] + EIIP_dict[triN[2]]
+                    EIIP_dict[triN[0]]
+                    + EIIP_dict[triN[1]]
+                    + EIIP_dict[triN[2]]
                 )
 
             encodings = []
-            header = ["SampleName"] + ["PseEIIP_{0}".format(i) for i in trincleotides]
+            header = ["SampleName"] + [
+                "PseEIIP_{0}".format(i) for i in trincleotides
+            ]
             encodings.append(header)
 
             for i in fastas:
                 name, sequence, _ = i[0], re.sub("-", "", i[1]), i[2]
                 code = [name]
-                trincleotide_frequency = self.TriNcleotideComposition(sequence, base)
+                trincleotide_frequency = self.TriNcleotideComposition(
+                    sequence, base
+                )
                 code = code + [
                     EIIPxyz[triN] * trincleotide_frequency[triN]
                     for triN in trincleotides
@@ -13045,7 +13812,9 @@ class iRNA(Sequence):
     def _DBE(self):
         try:
             if not self.is_equal:
-                self.error_msg = "DBE descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "DBE descriptor need fasta sequence with equal length."
+                )
                 return False
 
             AA_dict = {
@@ -13104,7 +13873,9 @@ class iRNA(Sequence):
 
             encodings = []
             header = ["SampleName"]
-            header += ["LPDF_%s" % i for i in range(1, len(self.fasta_list[0][1]))]
+            header += [
+                "LPDF_%s" % i for i in range(1, len(self.fasta_list[0][1]))
+            ]
             encodings.append(header)
 
             for i in self.fasta_list:
@@ -13139,7 +13910,9 @@ class iRNA(Sequence):
                 }
                 for j in range(1, len(sequence)):
                     dinucleotide_dict[sequence[j] + sequence[j - 1]] += 1
-                    code.append(dinucleotide_dict[sequence[j] + sequence[j - 1]] / j)
+                    code.append(
+                        dinucleotide_dict[sequence[j] + sequence[j - 1]] / j
+                    )
                 encodings.append(code)
             encodings = np.array(encodings)
             self.encodings = pd.DataFrame(
@@ -13156,21 +13929,29 @@ class iRNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
                 print(self.__default_para)
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
 
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[0] + r'\data\%s' %file_name if platform.system() == 'Windows' else os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' %file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             base = "ACGT"
@@ -13181,7 +13962,9 @@ class iRNA(Sequence):
                 for n1 in base
                 for n2 in base
             ]
-            header = ["SampleName"] + ["DPCP_{0}".format(i) for i in dinucleotides]
+            header = ["SampleName"] + [
+                "DPCP_{0}".format(i) for i in dinucleotides
+            ]
             encodings.append(header)
 
             AADict = {}
@@ -13193,8 +13976,13 @@ class iRNA(Sequence):
                 code = [name]
                 tmpCode = [0] * 16
                 for j in range(len(sequence) - 2 + 1):
-                    tmpCode[AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]] = (
-                        tmpCode[AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]] + 1
+                    tmpCode[
+                        AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]
+                    ] = (
+                        tmpCode[
+                            AADict[sequence[j]] * 4 + AADict[sequence[j + 1]]
+                        ]
+                        + 1
                     )
                 if sum(tmpCode) != 0:
                     tmpCode = [i / sum(tmpCode) for i in tmpCode]
@@ -13221,27 +14009,33 @@ class iRNA(Sequence):
     def _DPCP_type2(self):
         try:
             if not self.is_equal:
-                self.error_msg = (
-                    "DPCP type2 descriptor need fasta sequence with equal length."
-                )
+                self.error_msg = "DPCP type2 descriptor need fasta sequence with equal length."
                 return False
 
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
 
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[0] + r'\data\%s' %file_name if platform.system() == 'Windows' else os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' %file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             AA = "ACGT"
@@ -13264,7 +14058,9 @@ class iRNA(Sequence):
                     for j in range(len(sequence) - 1):
                         if sequence[j : j + 2] in AADict:
                             code.append(
-                                property_dict[p_name][AADict[sequence[j : j + 2]]]
+                                property_dict[p_name][
+                                    AADict[sequence[j : j + 2]]
+                                ]
                             )
                         else:
                             code.append(0)
@@ -13287,13 +14083,17 @@ class iRNA(Sequence):
 
             try:
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
                 property_name = property_dict.keys()
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             AA = "ACGT"
@@ -13305,7 +14105,9 @@ class iRNA(Sequence):
                 for aa2 in AA
                 for aa3 in AA
             ]
-            header = ["SampleName"] + ["TPCP_{0}".format(i) for i in triPeptides]
+            header = ["SampleName"] + [
+                "TPCP_{0}".format(i) for i in triPeptides
+            ]
             encodings.append(header)
 
             AADict = {}
@@ -13354,23 +14156,27 @@ class iRNA(Sequence):
     def _TPCP_type2(self):
         try:
             if not self.is_equal:
-                self.error_msg = (
-                    "TPCP type2 descriptor need fasta sequence with equal length."
-                )
+                self.error_msg = "TPCP type2 descriptor need fasta sequence with equal length."
                 return False
 
             if self.sequence_type == "DNA":
                 file_name = "tridnaPhyche.data"
-                property_name = self.__default_para["Tri-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Tri-DNA-Phychem"].split(
+                    ";"
+                )
 
             try:
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
 
             AA = "ACGT"
@@ -13382,7 +14188,9 @@ class iRNA(Sequence):
             encodings.append(header)
 
             AADict = {}
-            AA_list = [aa1 + aa2 + aa3 for aa1 in AA for aa2 in AA for aa3 in AA]
+            AA_list = [
+                aa1 + aa2 + aa3 for aa1 in AA for aa2 in AA for aa3 in AA
+            ]
             for i in range(len(AA_list)):
                 AADict[AA_list[i]] = i
 
@@ -13393,7 +14201,9 @@ class iRNA(Sequence):
                     for j in range(len(sequence) - 2):
                         if sequence[j : j + 3] in AADict:
                             code.append(
-                                property_dict[p_name][AADict[sequence[j : j + 3]]]
+                                property_dict[p_name][
+                                    AADict[sequence[j : j + 3]]
+                                ]
                             )
                         else:
                             code.append(0)
@@ -13413,7 +14223,9 @@ class iRNA(Sequence):
         try:
             NA = "ACGT"
             dinucleotide_list = [a1 + a2 for a1 in NA for a2 in NA]
-            trinucleotide_list = [a1 + a2 + a3 for a1 in NA for a2 in NA for a3 in NA]
+            trinucleotide_list = [
+                a1 + a2 + a3 for a1 in NA for a2 in NA for a3 in NA
+            ]
             dinucleotide_dict = {}
             trinucleotide_dict = {}
             for elem in dinucleotide_list:
@@ -13423,8 +14235,12 @@ class iRNA(Sequence):
 
             encodings = []
             header = ["SampleName"]
-            header += ["MMI_%s" % elem for elem in sorted(dinucleotide_dict.keys())]
-            header += ["MMI_%s" % elem for elem in sorted(trinucleotide_dict.keys())]
+            header += [
+                "MMI_%s" % elem for elem in sorted(dinucleotide_dict.keys())
+            ]
+            header += [
+                "MMI_%s" % elem for elem in sorted(trinucleotide_dict.keys())
+            ]
             encodings.append(header)
 
             for i in self.fasta_list:
@@ -13458,11 +14274,15 @@ class iRNA(Sequence):
                     f3_dict[key] /= len(sequence) - 2
 
                 for key in sorted(f2_dict.keys()):
-                    if f2_dict[key] != 0 and f1_dict[key[0]] * f1_dict[key[1]] != 0:
+                    if (
+                        f2_dict[key] != 0
+                        and f1_dict[key[0]] * f1_dict[key[1]] != 0
+                    ):
                         code.append(
                             f2_dict[key]
                             * math.log(
-                                f2_dict[key] / (f1_dict[key[0]] * f1_dict[key[1]])
+                                f2_dict[key]
+                                / (f1_dict[key[0]] * f1_dict[key[1]])
                             )
                         )
                     else:
@@ -13476,16 +14296,22 @@ class iRNA(Sequence):
                         and f1_dict[key[0]] * f1_dict[key[1]] != 0
                     ):
                         element_1 = f2_dict[key[0:2]] * math.log(
-                            f2_dict[key[0:2]] / (f1_dict[key[0]] * f1_dict[key[1]])
+                            f2_dict[key[0:2]]
+                            / (f1_dict[key[0]] * f1_dict[key[1]])
                         )
                     if f2_dict[key[0] + key[2]] != 0 and f1_dict[key[2]] != 0:
                         element_2 = (
                             f2_dict[key[0] + key[2]] / f1_dict[key[2]]
-                        ) * math.log(f2_dict[key[0] + key[2]] / f1_dict[key[2]])
-                    if f2_dict[key[1:3]] != 0 and f3_dict[key] / f2_dict[key[1:3]] != 0:
-                        element_3 = (f3_dict[key] / f2_dict[key[1:3]]) * math.log(
-                            f3_dict[key] / f2_dict[key[1:3]]
+                        ) * math.log(
+                            f2_dict[key[0] + key[2]] / f1_dict[key[2]]
                         )
+                    if (
+                        f2_dict[key[1:3]] != 0
+                        and f3_dict[key] / f2_dict[key[1:3]] != 0
+                    ):
+                        element_3 = (
+                            f3_dict[key] / f2_dict[key[1:3]]
+                        ) * math.log(f3_dict[key] / f2_dict[key[1:3]])
                     code.append(element_1 + element_2 - element_3)
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -13502,7 +14328,9 @@ class iRNA(Sequence):
     def _PS2(self):
         try:
             if not self.is_equal:
-                self.error_msg = "PS2 descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "PS2 descriptor need fasta sequence with equal length."
+                )
                 return False
             AA = "ACGT"
             AA_list = [a1 + a2 for a1 in AA for a2 in AA]
@@ -13537,7 +14365,9 @@ class iRNA(Sequence):
     def _PS3(self):
         try:
             if not self.is_equal:
-                self.error_msg = "PS3 descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "PS3 descriptor need fasta sequence with equal length."
+                )
                 return False
             AA = "ACGT"
             AA_list = [a1 + a2 + a3 for a1 in AA for a2 in AA for a3 in AA]
@@ -13572,11 +14402,17 @@ class iRNA(Sequence):
     def _PS4(self):
         try:
             if not self.is_equal:
-                self.error_msg = "PS4 descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "PS4 descriptor need fasta sequence with equal length."
+                )
                 return False
             AA = "ACGT"
             AA_list = [
-                a1 + a2 + a3 + a4 for a1 in AA for a2 in AA for a3 in AA for a4 in AA
+                a1 + a2 + a3 + a4
+                for a1 in AA
+                for a2 in AA
+                for a3 in AA
+                for a4 in AA
             ]
             AA_dict = {}
             for i in range(len(AA_list)):
@@ -13963,7 +14799,8 @@ class iRNA(Sequence):
                     for pos in range(1, 4):
                         for elem in ["x", "y", "z"]:
                             header.append(
-                                "Zcurve144_%s_%s%s.%s" % (pos, base, base1, elem)
+                                "Zcurve144_%s_%s%s.%s"
+                                % (pos, base, base1, elem)
                             )
             encodings.append(header)
 
@@ -14077,19 +14914,27 @@ class iRNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[0] + r'\data\%s' %file_name if platform.system() == 'Windows' else os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' %file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             nlag = self.__default_para["nlag"]
 
@@ -14130,7 +14975,9 @@ class iRNA(Sequence):
                                         )
                                         * float(
                                             property_dict[p_name][
-                                                AADict[sequence[j + d : j + d + 2]]
+                                                AADict[
+                                                    sequence[j + d : j + d + 2]
+                                                ]
                                             ]
                                         )
                                         for j in range(N - d)
@@ -14157,21 +15004,29 @@ class iRNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[
                 #                 0] + r'\data\%s' % file_name if platform.system() == 'Windows' else \
                 # os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' % file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             nlag = self.__default_para["nlag"]
 
@@ -14202,7 +15057,9 @@ class iRNA(Sequence):
                     pmean = (
                         sum(
                             [
-                                property_dict[p_name][AADict[sequence[i : i + 2]]]
+                                property_dict[p_name][
+                                    AADict[sequence[i : i + 2]]
+                                ]
                                 for i in range(N)
                             ]
                         )
@@ -14261,21 +15118,29 @@ class iRNA(Sequence):
         try:
             if self.sequence_type == "DNA":
                 file_name = "didnaPhyche.data"
-                property_name = self.__default_para["Di-DNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-DNA-Phychem"].split(
+                    ";"
+                )
             else:
                 file_name = "dirnaPhyche.data"
-                property_name = self.__default_para["Di-RNA-Phychem"].split(";")
+                property_name = self.__default_para["Di-RNA-Phychem"].split(
+                    ";"
+                )
             try:
                 # data_file = os.path.split(os.path.realpath(__file__))[
                 #                 0] + r'\data\%s' % file_name if platform.system() == 'Windows' else \
                 #     os.path.split(os.path.realpath(__file__))[0] + r'/data/%s' % file_name
                 data_file = os.path.join(
-                    os.path.split(os.path.realpath(__file__))[0], "data", file_name
+                    os.path.split(os.path.realpath(__file__))[0],
+                    "data",
+                    file_name,
                 )
                 with open(data_file, "rb") as handle:
                     property_dict = pickle.load(handle)
             except Exception as e:
-                self.error_msg = "Could not find the physicochemical properties file."
+                self.error_msg = (
+                    "Could not find the physicochemical properties file."
+                )
                 return False
             nlag = self.__default_para["nlag"]
 
@@ -14307,7 +15172,9 @@ class iRNA(Sequence):
                     pmean = (
                         sum(
                             [
-                                property_dict[p_name][AADict[sequence[i : i + 2]]]
+                                property_dict[p_name][
+                                    AADict[sequence[i : i + 2]]
+                                ]
                                 for i in range(N)
                             ]
                         )
@@ -14393,7 +15260,9 @@ class iRNA(Sequence):
                         for j in range(len(sequence) - kmer - l + 1):
                             acValue = acValue + (
                                 float(
-                                    myPropertyValue[p][myIndex[sequence[j : j + kmer]]]
+                                    myPropertyValue[p][
+                                        myIndex[sequence[j : j + kmer]]
+                                    ]
                                 )
                                 - meanValue
                             ) * (
@@ -14446,10 +15315,14 @@ class iRNA(Sequence):
                     # for j in range(len(sequence) - kmer):
                     for j in range(len(sequence) - kmer + 1):
                         meanP1 = meanP1 + float(
-                            myPropertyValue[pair[0]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[0]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                         meanP2 = meanP2 + float(
-                            myPropertyValue[pair[1]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[1]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                     # meanP1 = meanP1 / (len(sequence) - kmer)
                     # meanP2 = meanP2 / (len(sequence) - kmer)
@@ -14529,7 +15402,9 @@ class iRNA(Sequence):
                             # acValue = acValue + (float(myPropertyValue[p][myIndex[sequence[j: j+kmer]]]) - meanValue) * (float(myPropertyValue[p][myIndex[sequence[j+l:j+l+kmer]]]))
                             acValue = acValue + (
                                 float(
-                                    myPropertyValue[p][myIndex[sequence[j : j + kmer]]]
+                                    myPropertyValue[p][
+                                        myIndex[sequence[j : j + kmer]]
+                                    ]
                                 )
                                 - meanValue
                             ) * (
@@ -14550,10 +15425,14 @@ class iRNA(Sequence):
                     # for j in range(len(sequence) - kmer):
                     for j in range(len(sequence) - kmer + 1):
                         meanP1 = meanP1 + float(
-                            myPropertyValue[pair[0]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[0]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                         meanP2 = meanP2 + float(
-                            myPropertyValue[pair[1]][myIndex[sequence[j : j + kmer]]]
+                            myPropertyValue[pair[1]][
+                                myIndex[sequence[j : j + kmer]]
+                            ]
                         )
                     # meanP1 = meanP1 / (len(sequence) - kmer)
                     # meanP2 = meanP2 / (len(sequence) - kmer)
@@ -14596,7 +15475,8 @@ class iRNA(Sequence):
         baseSymbol = "ACGT"
         myFrequency = {}
         for pep in [
-            "".join(i) for i in list(itertools.product(baseSymbol, repeat=kmer))
+            "".join(i)
+            for i in list(itertools.product(baseSymbol, repeat=kmer))
         ]:
             myFrequency[pep] = 0
         for i in range(len(sequence) - kmer + 1):
@@ -14607,7 +15487,9 @@ class iRNA(Sequence):
             myFrequency[key] = myFrequency[key] / (len(sequence) - kmer + 1)
         return myFrequency
 
-    def correlationFunction(self, pepA, pepB, myIndex, myPropertyName, myPropertyValue):
+    def correlationFunction(
+        self, pepA, pepB, myIndex, myPropertyName, myPropertyValue
+    ):
         CC = 0
         for p in myPropertyName:
             CC = (
@@ -14631,7 +15513,13 @@ class iRNA(Sequence):
         return CC
 
     def get_theta_array(
-        self, myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, kmer
+        self,
+        myIndex,
+        myPropertyName,
+        myPropertyValue,
+        lamadaValue,
+        sequence,
+        kmer,
     ):
         thetaArray = []
         for tmpLamada in range(lamadaValue):
@@ -14648,7 +15536,13 @@ class iRNA(Sequence):
         return thetaArray
 
     def get_theta_array_type2(
-        self, myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, kmer
+        self,
+        myIndex,
+        myPropertyName,
+        myPropertyValue,
+        lamadaValue,
+        sequence,
+        kmer,
     ):
         thetaArray = []
         for tmpLamada in range(lamadaValue):
@@ -14683,15 +15577,22 @@ class iRNA(Sequence):
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pair in sorted(myIndex.keys()):
                     code.append(
-                        dipeptideFrequency[pair] / (1 + weight * sum(thetaArray))
+                        dipeptideFrequency[pair]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(17, 16 + lamadaValue + 1):
                     code.append(
-                        (weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 17])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -14723,15 +15624,22 @@ class iRNA(Sequence):
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pair in sorted(myIndex.keys()):
                     code.append(
-                        dipeptideFrequency[pair] / (1 + weight * sum(thetaArray))
+                        dipeptideFrequency[pair]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(17, 16 + lamadaValue + 1):
                     code.append(
-                        (weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 17])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -14765,15 +15673,22 @@ class iRNA(Sequence):
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 3
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    3,
                 )
                 for pep in sorted(myIndex.keys()):
                     code.append(
-                        tripeptideFrequency[pep] / (1 + weight * sum(thetaArray))
+                        tripeptideFrequency[pep]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(65, 64 + lamadaValue + 1):
                     code.append(
-                        (weight * thetaArray[k - 65]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 65])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -14806,15 +15721,22 @@ class iRNA(Sequence):
                 code = [name]
                 dipeptideFrequency = self.get_kmer_frequency(sequence, 2)
                 thetaArray = self.get_theta_array_type2(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pair in sorted(myIndex.keys()):
                     code.append(
-                        dipeptideFrequency[pair] / (1 + weight * sum(thetaArray))
+                        dipeptideFrequency[pair]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(17, 16 + lamadaValue * len(myPropertyName) + 1):
                     code.append(
-                        (weight * thetaArray[k - 17]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 17])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -14846,15 +15768,22 @@ class iRNA(Sequence):
                 code = [name]
                 tripeptideFrequency = self.get_kmer_frequency(sequence, 3)
                 thetaArray = self.get_theta_array_type2(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 3
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    3,
                 )
                 for pep in sorted(myIndex.keys()):
                     code.append(
-                        tripeptideFrequency[pep] / (1 + weight * sum(thetaArray))
+                        tripeptideFrequency[pep]
+                        / (1 + weight * sum(thetaArray))
                     )
                 for k in range(65, 64 + lamadaValue * len(myPropertyName) + 1):
                     code.append(
-                        (weight * thetaArray[k - 65]) / (1 + weight * sum(thetaArray))
+                        (weight * thetaArray[k - 65])
+                        / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
             encodings = np.array(encodings)
@@ -14892,21 +15821,33 @@ class iRNA(Sequence):
                 code = [name]
                 kmerFreauency = self.get_kmer_frequency(sequence, kmer)
                 thetaArray = self.get_theta_array(
-                    myIndex, myPropertyName, myPropertyValue, lamadaValue, sequence, 2
+                    myIndex,
+                    myPropertyName,
+                    myPropertyValue,
+                    lamadaValue,
+                    sequence,
+                    2,
                 )
                 for pep in sorted(
                     [
                         "".join(j)
-                        for j in list(itertools.product(baseSymbol, repeat=kmer))
+                        for j in list(
+                            itertools.product(baseSymbol, repeat=kmer)
+                        )
                     ]
                 ):
-                    code.append(kmerFreauency[pep] / (1 + weight * sum(thetaArray)))
+                    code.append(
+                        kmerFreauency[pep] / (1 + weight * sum(thetaArray))
+                    )
                 for k in range(
                     len(baseSymbol) ** kmer + 1,
                     len(baseSymbol) ** kmer + lamadaValue + 1,
                 ):
                     code.append(
-                        (weight * thetaArray[k - (len(baseSymbol) ** kmer + 1)])
+                        (
+                            weight
+                            * thetaArray[k - (len(baseSymbol) ** kmer + 1)]
+                        )
                         / (1 + weight * sum(thetaArray))
                     )
                 encodings.append(code)
@@ -14998,11 +15939,15 @@ class iRNA(Sequence):
                             code.append(0)
                         else:
                             p_num, n_num = positive_number, negative_number
-                            po_number = matrix_po[j][order[sequence[j : j + 3]]]
+                            po_number = matrix_po[j][
+                                order[sequence[j : j + 3]]
+                            ]
                             if i[0] in positive_key and po_number > 0:
                                 po_number -= 1
                                 p_num -= 1
-                            ne_number = matrix_ne[j][order[sequence[j : j + 3]]]
+                            ne_number = matrix_ne[j][
+                                order[sequence[j : j + 3]]
+                            ]
                             if i[0] in negative_key and ne_number > 0:
                                 ne_number -= 1
                                 n_num -= 1
@@ -15035,7 +15980,9 @@ class iRNA(Sequence):
         for i in range(len(AA)):
             myDict[AA[i]] = i
         maxValue, minValue = 2, -1
-        return (score_matrix[myDict[a]][myDict[b]] - minValue) / (maxValue - minValue)
+        return (score_matrix[myDict[a]][myDict[b]] - minValue) / (
+            maxValue - minValue
+        )
 
     def CalculateContent(self, myDistance, j, myLabelSets):
         content = []
@@ -15050,10 +15997,15 @@ class iRNA(Sequence):
 
     def CalculateDistanceN(self, sequence1, sequence2):
         if len(sequence1) != len(sequence2):
-            self.error_msg = "KNN descriptor need fasta sequence with equal length."
+            self.error_msg = (
+                "KNN descriptor need fasta sequence with equal length."
+            )
             return 1
         distance = 1 - sum(
-            [self.SimN(sequence1[i], sequence2[i]) for i in range(len(sequence1))]
+            [
+                self.SimN(sequence1[i], sequence2[i])
+                for i in range(len(sequence1))
+            ]
         ) / len(sequence1)
         return distance
 
@@ -15063,7 +16015,9 @@ class iRNA(Sequence):
             self.encoding_array = np.array([])
 
             if not self.is_equal:
-                self.error_msg = "KNN descriptor need fasta sequence with equal length."
+                self.error_msg = (
+                    "KNN descriptor need fasta sequence with equal length."
+                )
                 return False
 
             topK_values = [
@@ -15151,16 +16105,23 @@ class iRNA(Sequence):
                             [
                                 int(training_data[j][2]),
                                 distance_dict.get(
-                                    ":".join(sorted([name, training_data[j][0]])), 1
+                                    ":".join(
+                                        sorted([name, training_data[j][0]])
+                                    ),
+                                    1,
                                 ),
                             ]
                         )
 
                 tmp_distance_list = np.array(tmp_distance_list)
-                tmp_distance_list = tmp_distance_list[np.lexsort(tmp_distance_list.T)]
+                tmp_distance_list = tmp_distance_list[
+                    np.lexsort(tmp_distance_list.T)
+                ]
 
                 for j in topK_numbers:
-                    code += self.CalculateContent(tmp_distance_list, j, tmp_label_sets)
+                    code += self.CalculateContent(
+                        tmp_distance_list, j, tmp_label_sets
+                    )
                 encodings.append(code)
 
             encodings = np.array(encodings)
@@ -15344,7 +16305,9 @@ class iStructure(object):
             )
         elif self.pdb_file.endswith(".cif") or self.pdb_file.endswith(".CIF"):
             parser = MMCIFParser()
-            self.structure = parser.get_structure(self.pdb_file[0:4], self.pdb_file)
+            self.structure = parser.get_structure(
+                self.pdb_file[0:4], self.pdb_file
+            )
         try:
             self.model = self.structure[0]
             return True
@@ -15361,7 +16324,9 @@ class iStructure(object):
                 self.pdb_id = tmp[3].lower()
             if self.pdb_file.lower().endswith(".cif"):
                 with open(self.pdb_file) as f:
-                    self.pdb_id = f.read().strip().split("\n")[0].split("_")[1].lower()
+                    self.pdb_id = (
+                        f.read().strip().split("\n")[0].split("_")[1].lower()
+                    )
             return True, self.pdb_id
         except Exception as e:
             self.error_msg = str(e)
@@ -15399,7 +16364,9 @@ class iStructure(object):
             tmp_residues = list(self.model.get_residues())
             dssp_status = True
             try:
-                dssp = DSSP(self.model, self.pdb_file)  # calculate secondary structure
+                dssp = DSSP(
+                    self.model, self.pdb_file
+                )  # calculate secondary structure
             except Exception as e:
                 self.error_msg = "Secondary structure calculate failed. Please check whether DSSP was installed?"
                 dssp_status = 0
@@ -15414,7 +16381,9 @@ class iStructure(object):
 
             target_list = []
             for residue in residues:
-                target_list.append([residue.parent.id, residue.id[1], residue.resname])
+                target_list.append(
+                    [residue.parent.id, residue.id[1], residue.resname]
+                )
 
             header = []
             encodings = []
@@ -15429,10 +16398,14 @@ class iStructure(object):
                     if (
                         self.model.has_id(target_chain)
                         and self.model[target_chain].has_id(target_resseq)
-                        and self.model[target_chain][target_resseq].get_resname()
+                        and self.model[target_chain][
+                            target_resseq
+                        ].get_resname()
                         == target_resname
                     ):  # check if the item in target_list exist
-                        target_residue = self.model[target_chain][target_resseq]
+                        target_residue = self.model[target_chain][
+                            target_resseq
+                        ]
                         target_residue_name = target_residue.get_resname()
                         target_atom = (
                             target_residue["CB"]
@@ -15445,7 +16418,9 @@ class iStructure(object):
                         )  # [chain, resseq, resname, distance, property, hec8, hec3]
                         for residue, hec in zip(residues, dssp):
                             source_atom = (
-                                residue["CB"] if residue.has_id("CB") else residue["CA"]
+                                residue["CB"]
+                                if residue.has_id("CB")
+                                else residue["CA"]
                             )
                             record_list.append(
                                 [
@@ -15453,7 +16428,9 @@ class iStructure(object):
                                     residue.get_id()[1],
                                     self.AA_3to1[residue.get_resname()],
                                     target_atom - source_atom,
-                                    self.AA_group[self.AA_3to1[residue.get_resname()]],
+                                    self.AA_group[
+                                        self.AA_3to1[residue.get_resname()]
+                                    ],
                                     hec[2],
                                     self.AA_HEC[hec[2]],
                                 ]
@@ -15515,10 +16492,14 @@ class iStructure(object):
                     if (
                         self.model.has_id(target_chain)
                         and self.model[target_chain].has_id(target_resseq)
-                        and self.model[target_chain][target_resseq].get_resname()
+                        and self.model[target_chain][
+                            target_resseq
+                        ].get_resname()
                         == target_resname
                     ):  # check if the item in target_list exist
-                        target_residue = self.model[target_chain][target_resseq]
+                        target_residue = self.model[target_chain][
+                            target_resseq
+                        ]
                         target_residue_name = target_residue.get_resname()
                         target_atom = (
                             target_residue["CB"]
@@ -15526,10 +16507,14 @@ class iStructure(object):
                             else target_residue["CA"]
                         )
 
-                        record_list = []  # [chain, resseq, resname, distance, property]
+                        record_list = (
+                            []
+                        )  # [chain, resseq, resname, distance, property]
                         for residue in residues:
                             source_atom = (
-                                residue["CB"] if residue.has_id("CB") else residue["CA"]
+                                residue["CB"]
+                                if residue.has_id("CB")
+                                else residue["CA"]
                             )
                             record_list.append(
                                 [
@@ -15537,7 +16522,9 @@ class iStructure(object):
                                     residue.get_id()[1],
                                     self.AA_3to1[residue.get_resname()],
                                     target_atom - source_atom,
-                                    self.AA_group[self.AA_3to1[residue.get_resname()]],
+                                    self.AA_group[
+                                        self.AA_3to1[residue.get_resname()]
+                                    ],
                                 ]
                             )
 
@@ -15619,11 +16606,18 @@ class iStructure(object):
                     item[1],
                     item[2],
                 )
-                if target_chain + str(target_serial_number) + target_element in atoms:
+                if (
+                    target_chain + str(target_serial_number) + target_element
+                    in atoms
+                ):
                     target = atoms[
-                        target_chain + str(target_serial_number) + target_element
+                        target_chain
+                        + str(target_serial_number)
+                        + target_element
                     ]
-                    record_list = []  # [chain, serial_number, element, distance]
+                    record_list = (
+                        []
+                    )  # [chain, serial_number, element, distance]
                     for key in atoms:
                         atom = atoms[key]
                         record_list.append(
@@ -15636,7 +16630,12 @@ class iStructure(object):
                         )
                     df_atom = pd.DataFrame(
                         np.array(record_list),
-                        columns=["chain", "serial_number", "element", "distance"],
+                        columns=[
+                            "chain",
+                            "serial_number",
+                            "element",
+                            "distance",
+                        ],
                     )
                     df_atom["distance"] = df_atom["distance"].astype("float64")
 
@@ -15704,7 +16703,11 @@ class iStructure(object):
             for e in hse:
                 encodings.append(
                     [
-                        e[0].parent.id + "_" + e[0].resname + "_" + str(e[0].id[1]),
+                        e[0].parent.id
+                        + "_"
+                        + e[0].resname
+                        + "_"
+                        + str(e[0].id[1]),
                         e[1][0],
                         e[1][1],
                         e[1][2],
@@ -15727,7 +16730,11 @@ class iStructure(object):
             for e in hse:
                 encodings.append(
                     [
-                        e[0].parent.id + "_" + e[0].resname + "_" + str(e[0].id[1]),
+                        e[0].parent.id
+                        + "_"
+                        + e[0].resname
+                        + "_"
+                        + str(e[0].id[1]),
                         e[1][0],
                         e[1][1],
                         e[1][2],
@@ -15749,7 +16756,9 @@ class iStructure(object):
         code = []
         m = 1
         for s in range(shell[0], shell[1] + 1, shell[2]):
-            df_tmp = df[(df["distance"] >= s) & (df["distance"] < s + shell[2])]
+            df_tmp = df[
+                (df["distance"] >= s) & (df["distance"] < s + shell[2])
+            ]
 
             AA = "ACDEFGHIKLMNPQRSTVWY"
             AA_dict = {}
@@ -15801,7 +16810,9 @@ class iStructure(object):
         code = []
         m = 1
         for s in range(shell[0], shell[1] + 1, shell[2]):
-            df_tmp = df[(df["distance"] >= s) & (df["distance"] < s + shell[2])]
+            df_tmp = df[
+                (df["distance"] >= s) & (df["distance"] < s + shell[2])
+            ]
             group_dict = {
                 "aliphatic": 0,
                 "aromatic": 0,
@@ -15873,7 +16884,9 @@ class iStructure(object):
         code = []
         m = 1
         for s in range(shell[0], shell[1] + 1, shell[2]):
-            df_tmp = df[(df["distance"] >= s) & (df["distance"] < s + shell[2])]
+            df_tmp = df[
+                (df["distance"] >= s) & (df["distance"] < s + shell[2])
+            ]
             group_dict = {
                 "H": 0,
                 "B": 0,
@@ -15939,7 +16952,9 @@ class iStructure(object):
         code = []
         m = 1
         for s in range(shell[0], shell[1] + 1, shell[2]):
-            df_tmp = df[(df["distance"] >= s) & (df["distance"] < s + shell[2])]
+            df_tmp = df[
+                (df["distance"] >= s) & (df["distance"] < s + shell[2])
+            ]
             group_dict = {
                 "H": 0,
                 "B": 0,
@@ -16005,7 +17020,9 @@ class iStructure(object):
         code = []
         m = 1
         for s in range(shell[0], shell[1] + 1, shell[2]):
-            df_tmp = df[(df["distance"] >= s) & (df["distance"] < s + shell[2])]
+            df_tmp = df[
+                (df["distance"] >= s) & (df["distance"] < s + shell[2])
+            ]
             AA = "CNOS"
             AA_dict = {}
             for aa in AA:
@@ -16062,14 +17079,18 @@ class iStructure(object):
             ]
             tmp_residues = list(self.model.get_residues())
             residues = []
-            for residue in tmp_residues:  # remove hetfield, only residues are saved.
+            for (
+                residue
+            ) in tmp_residues:  # remove hetfield, only residues are saved.
                 residue_id = residue.get_id()
                 if residue_id[0] == " ":
                     residues.append(residue)
 
             target_list = []
             for residue in residues:
-                target_list.append([residue.parent.id, residue.id[1], residue.resname])
+                target_list.append(
+                    [residue.parent.id, residue.id[1], residue.resname]
+                )
 
             G = nx.Graph()
             # add graph nodes
@@ -16093,7 +17114,9 @@ class iStructure(object):
                     + str(residues[i].id[1])
                 )
                 atom = (
-                    residues[i]["CB"] if residues[i].has_id("CB") else residues[i]["CA"]
+                    residues[i]["CB"]
+                    if residues[i].has_id("CB")
+                    else residues[i]["CA"]
                 )
                 CB_coord_dict[node] = atom.coord
                 for j in range(i + 1, len(residues)):
@@ -16115,18 +17138,22 @@ class iStructure(object):
             net_dict = {}
             net_dict["average_clustering"] = nx.average_clustering(G)
             net_dict["diameter"] = nx.diameter(G)
-            net_dict["average_shortest_path_length"] = nx.average_shortest_path_length(
-                G
+            net_dict["average_shortest_path_length"] = (
+                nx.average_shortest_path_length(G)
             )
 
-            net_dict["degree_centrality"] = nx.degree_centrality(G)  # degree centrality
+            net_dict["degree_centrality"] = nx.degree_centrality(
+                G
+            )  # degree centrality
             net_dict["betweenness_centrality"] = nx.betweenness_centrality(
                 G
             )  # betweenness
             net_dict["clustering"] = nx.clustering(G)  # clustering coefficient
-            net_dict["closeness_centrality"] = nx.closeness_centrality(G)  # closeness
-            net_dict["eigenvector_centrality"] = nx.eigenvector_centrality_numpy(
+            net_dict["closeness_centrality"] = nx.closeness_centrality(
                 G
+            )  # closeness
+            net_dict["eigenvector_centrality"] = (
+                nx.eigenvector_centrality_numpy(G)
             )  # centrality
 
             encodings = []
@@ -16164,13 +17191,17 @@ class iStructure(object):
         try:
             if data is not None:
                 if file_name.endswith(".tsv"):
-                    np.savetxt(file_name, data.values[:, 1:], fmt="%s", delimiter="\t")
+                    np.savetxt(
+                        file_name, data.values[:, 1:], fmt="%s", delimiter="\t"
+                    )
                     return True
                 if file_name.endswith(".tsv_1"):
                     data.to_csv(file_name, sep="\t", header=True, index=False)
                     return True
                 if file_name.endswith(".csv"):
-                    np.savetxt(file_name, data.values[:, 1:], fmt="%s", delimiter=",")
+                    np.savetxt(
+                        file_name, data.values[:, 1:], fmt="%s", delimiter=","
+                    )
                     return True
                 if file_name.endswith(".svm"):
                     with open(file_name, "w") as f:
@@ -16511,7 +17542,14 @@ class iLigand:
                 "ATSp7",
                 "ATSp8",
             ],
-            "Molecular properties": ["LogP", "MR", "LabuteASA", "TPSA", "Hy", "UI"],
+            "Molecular properties": [
+                "LogP",
+                "MR",
+                "LabuteASA",
+                "TPSA",
+                "Hy",
+                "UI",
+            ],
             "Charge": [
                 "SPP",
                 "LDI",
@@ -16642,7 +17680,9 @@ class iLigand:
                     else:
                         df.loc[i, fp] = code
             self.encodings = pd.DataFrame(
-                df.values.astype(float), columns=df.columns, index=self.smiles_list
+                df.values.astype(float),
+                columns=df.columns,
+                index=self.smiles_list,
             )
         else:
             self.error_msg = "Descriptor does not exist."
@@ -16756,7 +17796,9 @@ class iAnalysis:
                     self.dataframe.values
                 )
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16771,11 +17813,13 @@ class iAnalysis:
     def MiniBatchKMeans(self, nclusters=2):
         try:
             if self.dataframe is not None:
-                cluster_res = MiniBatchKMeans(n_clusters=nclusters).fit_predict(
-                    self.dataframe.values
-                )
+                cluster_res = MiniBatchKMeans(
+                    n_clusters=nclusters
+                ).fit_predict(self.dataframe.values)
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16790,11 +17834,13 @@ class iAnalysis:
     def GM(self, nclusters=2):
         try:
             if self.dataframe is not None:
-                cluster_res = GaussianMixture(n_components=nclusters).fit_predict(
-                    self.dataframe.values
-                )
+                cluster_res = GaussianMixture(
+                    n_components=nclusters
+                ).fit_predict(self.dataframe.values)
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16809,11 +17855,13 @@ class iAnalysis:
     def Agglomerative(self, nclusters=2):
         try:
             if self.dataframe is not None:
-                cluster_res = AgglomerativeClustering(n_clusters=nclusters).fit_predict(
-                    self.dataframe.values
-                )
+                cluster_res = AgglomerativeClustering(
+                    n_clusters=nclusters
+                ).fit_predict(self.dataframe.values)
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16828,11 +17876,13 @@ class iAnalysis:
     def Spectral(self, nclusters=2):
         try:
             if self.dataframe is not None:
-                cluster_res = SpectralClustering(n_clusters=nclusters).fit_predict(
-                    self.dataframe.values
-                )
+                cluster_res = SpectralClustering(
+                    n_clusters=nclusters
+                ).fit_predict(self.dataframe.values)
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16855,7 +17905,9 @@ class iAnalysis:
                     max_loop,
                 ).cluster_array
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16874,7 +17926,9 @@ class iAnalysis:
                 Z = sch.linkage(disMat, method="average")
                 cluster_res = sch.fcluster(Z, 1, "inconsistent")
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16889,9 +17943,13 @@ class iAnalysis:
     def APC(self):
         try:
             if self.dataframe is not None:
-                cluster_res = AffinityPropagation().fit_predict(self.dataframe.values)
+                cluster_res = AffinityPropagation().fit_predict(
+                    self.dataframe.values
+                )
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16914,7 +17972,9 @@ class iAnalysis:
                 except Exception as e:
                     cluster_res = np.zeros(len(self.dataframe))
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16932,7 +17992,9 @@ class iAnalysis:
                 data = StandardScaler().fit_transform(self.dataframe.values)
                 cluster_res = DBSCAN().fit_predict(data)
                 self.cluster_result = pd.DataFrame(
-                    cluster_res, index=self.dataframe.index, columns=["cluster"]
+                    cluster_res,
+                    index=self.dataframe.index,
+                    columns=["cluster"],
                 )
                 # rd_data, ok = self.t_sne(2)
                 # self.cluster_plots = self.generate_plot_data(cluster_res, rd_data)
@@ -16949,10 +18011,14 @@ class iAnalysis:
         try:
             if self.dataframe is not None:
                 if n_components >= self.dataframe.shape[1]:
-                    self.error_msg = "The reduced dimension number is out of range."
+                    self.error_msg = (
+                        "The reduced dimension number is out of range."
+                    )
                     return None, False
                 self.dimension_reduction_result = TSNE(
-                    n_components=n_components, method="exact", learning_rate=100
+                    n_components=n_components,
+                    method="exact",
+                    learning_rate=100,
                 ).fit_transform(self.dataframe.values)
 
                 return True
@@ -16967,7 +18033,9 @@ class iAnalysis:
         try:
             if self.dataframe is not None:
                 if n_components >= self.dataframe.shape[1]:
-                    self.error_msg = "The reduced dimension number is out of range."
+                    self.error_msg = (
+                        "The reduced dimension number is out of range."
+                    )
                     return None, False
                 self.dimension_reduction_result = PCA(
                     n_components=n_components
@@ -16984,12 +18052,16 @@ class iAnalysis:
         try:
             if self.dataframe is not None:
                 if n_components >= self.dataframe.shape[1]:
-                    self.error_msg = "The reduced dimension number is out of range."
+                    self.error_msg = (
+                        "The reduced dimension number is out of range."
+                    )
                     return None, False
                 lda = LatentDirichletAllocation(n_components=n_components).fit(
                     self.dataframe.values, self.datalabel
                 )
-                self.dimension_reduction_result = lda.transform(self.dataframe.values)
+                self.dimension_reduction_result = lda.transform(
+                    self.dataframe.values
+                )
                 return True
             else:
                 self.error_msg = "Data is null."
@@ -17026,7 +18098,9 @@ class iAnalysis:
                 "#999999",
             ]
             marklist = ["o"] * 9 + ["v"] * 9 + ["^"] * 9 + ["+"] * 9
-            prefix = "Cluster:" if method == "Clustering" else "Sample category:"
+            prefix = (
+                "Cluster:" if method == "Clustering" else "Sample category:"
+            )
             fig = plt.figure(0, facecolor="w")
             plt.grid(False)
             plt.title(method, fontdict=fontdict)
@@ -17063,10 +18137,15 @@ class iAnalysis:
 
     def dimension_to_csv(self, file="dimension_reduction_result.csv"):
         if self.dimension_reduction_result is not None:
-            np.savetxt(file, self.dimension_reduction_result, fmt="%f", delimiter=",")
+            np.savetxt(
+                file, self.dimension_reduction_result, fmt="%f", delimiter=","
+            )
 
     def normalization_to_csv(
-        self, file="feature_normalization_result.csv", header=False, index=False
+        self,
+        file="feature_normalization_result.csv",
+        header=False,
+        index=False,
     ):
         if self.feature_normalization_data is not None:
             self.feature_normalization_data.to_csv(
@@ -17123,7 +18202,12 @@ class iAnalysis:
 
 class MarkvCluster(object):
     def __init__(
-        self, data, expand_factor=2, inflate_factor=2.0, mult_factor=2.0, max_loop=200
+        self,
+        data,
+        expand_factor=2,
+        inflate_factor=2.0,
+        mult_factor=2.0,
+        max_loop=200,
     ):
         super(MarkvCluster, self).__init__()
         M = np.corrcoef(data)
@@ -17158,10 +18242,16 @@ class MarkvCluster(object):
 
         A = nx.adjacency_matrix(G)
         return self.mcl(
-            np.array(A.todense()), expand_factor, inflate_factor, max_loop, mult_factor
+            np.array(A.todense()),
+            expand_factor,
+            inflate_factor,
+            max_loop,
+            mult_factor,
         )
 
-    def mcl(self, M, expand_factor=2, inflate_factor=2, max_loop=10, mult_factor=1):
+    def mcl(
+        self, M, expand_factor=2, inflate_factor=2, max_loop=10, mult_factor=1
+    ):
         M = self.add_diag(M, mult_factor)
         M = self.normalize(M)
         for i in range(max_loop):
@@ -17270,7 +18360,9 @@ class iPlot:
             else:
                 bins = np.linspace(min_value, max_value, 20)
                 for i, c in enumerate(categories):
-                    tmp_data = data[np.where(data[:, 0] == c)][:, 1:].reshape(-1)
+                    tmp_data = data[np.where(data[:, 0] == c)][:, 1:].reshape(
+                        -1
+                    )
                     plt.hist(
                         tmp_data,
                         bins=bins,
@@ -17279,13 +18371,15 @@ class iPlot:
                         facecolor=color[i % len(color)],
                         alpha=0.5,
                     )
-                    X_plot = np.linspace(min_value, max_value, 100)[:, np.newaxis]
+                    X_plot = np.linspace(min_value, max_value, 100)[
+                        :, np.newaxis
+                    ]
                     bandwidth = (max_value - min_value) / 20.0
                     if bandwidth <= 0:
                         bandwidth = 0.1
-                    kde = KernelDensity(kernel="gaussian", bandwidth=bandwidth).fit(
-                        tmp_data.reshape((-1, 1))
-                    )
+                    kde = KernelDensity(
+                        kernel="gaussian", bandwidth=bandwidth
+                    ).fit(tmp_data.reshape((-1, 1)))
                     log_dens = kde.score_samples(X_plot)
                     plt.plot(
                         X_plot[:, 0],
@@ -17322,9 +18416,9 @@ class iPlot:
                 bandwidth = (max_value - min_value) / 20.0
                 if bandwidth <= 0:
                     bandwidth = 0.1
-                kde = KernelDensity(kernel="gaussian", bandwidth=bandwidth).fit(
-                    tmp_data.reshape((-1, 1))
-                )
+                kde = KernelDensity(
+                    kernel="gaussian", bandwidth=bandwidth
+                ).fit(tmp_data.reshape((-1, 1)))
                 log_dens = kde.score_samples(X_plot)
                 plt.plot(X_plot[:, 0], np.exp(log_dens), color=color[0])
                 plt.xlabel("Value bins", fontdict=self.font_label)
@@ -17336,7 +18430,9 @@ class iPlot:
                 plt.savefig(output)
                 plt.close()
 
-    def heatmap(self, samples=(0, 50), descriptors=(0, 100), output="heatmap.pdf"):
+    def heatmap(
+        self, samples=(0, 50), descriptors=(0, 100), output="heatmap.pdf"
+    ):
         data = copy.deepcopy(self.dataframe)
         if self.label:
             data = data.drop(labels=0, axis=1)
@@ -17363,11 +18459,15 @@ class iPlot:
             ax = fig.add_subplot(111)
             plt.grid(False)
             im = plt.imshow(
-                data.values[ymin:ymax, xmin:xmax], cmap=plt.cm.autumn, alpha=0.6
+                data.values[ymin:ymax, xmin:xmax],
+                cmap=plt.cm.autumn,
+                alpha=0.6,
             )
             plt.colorbar(im)
 
-            ax.tick_params(axis="both", which="both", right=False, top=False, width=0.6)
+            ax.tick_params(
+                axis="both", which="both", right=False, top=False, width=0.6
+            )
             if ymax - ymin <= 20:
                 tick = range(ymax - ymin)
             else:
@@ -17478,12 +18578,16 @@ class iPlot:
                 index_dict[index_ls[i]] = scale_ls[i]
 
             for c, category in enumerate(sample_categories):
-                tmp_df = self.dataframe[self.dataframe.iloc[:, 0] == category].iloc[
-                    :, 1:
-                ]
+                tmp_df = self.dataframe[
+                    self.dataframe.iloc[:, 0] == category
+                ].iloc[:, 1:]
                 tmp_positions = index_dict.values()
                 positions_range = [
-                    list(np.linspace(p - 0.4, p + 0.4, len(sample_categories) + 2))
+                    list(
+                        np.linspace(
+                            p - 0.4, p + 0.4, len(sample_categories) + 2
+                        )
+                    )
                     for p in tmp_positions
                 ]
                 positions = [p[c + 1] for p in positions_range]
@@ -17504,7 +18608,8 @@ class iPlot:
 
                 for k, box in enumerate(bp2["boxes"]):
                     box.set(
-                        edgecolor=colorlist[c % len(colorlist)], facecolor="#FFFFFF"
+                        edgecolor=colorlist[c % len(colorlist)],
+                        facecolor="#FFFFFF",
                     )
                 for k, median in enumerate(bp2["medians"]):
                     median.set(color=colorlist[c % len(colorlist)])
@@ -17560,7 +18665,9 @@ class iPlot:
                     j = k // 2
                     item.set(color=colorlist[0])
             for k, flier in enumerate(bp2["fliers"]):
-                flier.set(marker="o", markeredgecolor=colorlist[0], markeredgewidth=1)
+                flier.set(
+                    marker="o", markeredgecolor=colorlist[0], markeredgewidth=1
+                )
             for k, mean in enumerate(bp2["means"]):
                 mean.set(
                     marker="^",
@@ -17580,7 +18687,11 @@ class iPlot:
         plt.close()
 
     def circularplot(
-        self, samples=True, sample_range=(0, 30), cutoff=0.5, output="circularplot.pdf"
+        self,
+        samples=True,
+        sample_range=(0, 30),
+        cutoff=0.5,
+        output="circularplot.pdf",
     ):
         if self.label:
             data = self.dataframe.iloc[:, 1:]
@@ -17621,7 +18732,12 @@ class iPlot:
                 if abs(df.iloc[i]["corr"]) >= cutoff:
                     plt.plot(theta, r, color=tmp_color, alpha=1, linewidth=0.8)
         plt.bar(
-            x=theta_g, height=[0.2], bottom=5.1, width=0.01, color="#3399FF", alpha=0.8
+            x=theta_g,
+            height=[0.2],
+            bottom=5.1,
+            width=0.01,
+            color="#3399FF",
+            alpha=0.8,
         )
 
         for i in range(len(theta_g)):
@@ -17660,17 +18776,26 @@ class iPlot:
         labels = list(results.keys())
         data = np.array(list(results.values()))
         data_cum = data.cumsum(axis=1)
-        category_colors = plt.get_cmap("RdYlGn")(np.linspace(0.15, 0.85, data.shape[1]))
+        category_colors = plt.get_cmap("RdYlGn")(
+            np.linspace(0.15, 0.85, data.shape[1])
+        )
 
         ax1.invert_yaxis()
         ax1.xaxis.set_visible(False)
         ax1.set_xlim(0, np.sum(data, axis=1).max())
 
-        for i, (colname, color) in enumerate(zip(category_names, category_colors)):
+        for i, (colname, color) in enumerate(
+            zip(category_names, category_colors)
+        ):
             widths = data[:, i]
             starts = data_cum[:, i] - widths
             rects = ax1.barh(
-                labels, widths, left=starts, height=0.1, label=colname, color=color
+                labels,
+                widths,
+                left=starts,
+                height=0.1,
+                label=colname,
+                color=color,
             )
             r, g, b, _ = color
             # text_color = "white" if r * g * b < 0.5 else "darkgrey"
@@ -17715,9 +18840,19 @@ class iPlot:
 
         df = pd.DataFrame(
             np.array(tmp),
-            columns=["Startx", "Starty", "Endx", "Endy", "NodeX", "NodeY", "corr"],
+            columns=[
+                "Startx",
+                "Starty",
+                "Endx",
+                "Endy",
+                "NodeX",
+                "NodeY",
+                "corr",
+            ],
         )
-        df["xielv1"] = (df["Starty"] - df["Endy"]) / (df["Startx"] - df["Endx"])
+        df["xielv1"] = (df["Starty"] - df["Endy"]) / (
+            df["Startx"] - df["Endx"]
+        )
         df["xielv2"] = -1 / df["xielv1"]
         df["central_point_x"] = (df["Startx"] + df["Endx"]) / 2
         df["central_point_y"] = (df["Starty"] + df["Endy"]) / 2
@@ -17753,7 +18888,11 @@ class iPlot:
             return "#778899"
 
     def scatterplot(
-        self, method="PCA", xlabel="PC1", ylabel="PC2", output="scatterplot.pdf"
+        self,
+        method="PCA",
+        xlabel="PC1",
+        ylabel="PC2",
+        output="scatterplot.pdf",
     ):
         colorlist = [
             "#E41A1C",
@@ -17794,7 +18933,9 @@ class iPlot:
         plot_data = []
         categories = sorted(set(datalabel))
         for c in categories:
-            tmp_data = analysis.dimension_reduction_result[np.where(datalabel == c)]
+            tmp_data = analysis.dimension_reduction_result[
+                np.where(datalabel == c)
+            ]
             plot_data.append([c, tmp_data])
 
         fig = plt.figure(0)
