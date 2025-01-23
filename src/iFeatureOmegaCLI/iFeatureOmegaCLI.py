@@ -12,7 +12,8 @@ import cmath
 import pickle
 import itertools
 import numpy as np
-import networkx as nx
+
+# import networkx as nx
 import pandas as pd
 import warnings
 from collections import Counter
@@ -18214,7 +18215,7 @@ class MarkvCluster(object):
         M[M < 0] = 0
         for i in range(len(M)):
             M[i][i] = 0
-        import networkx as nx
+        # import networkx as nx
 
         G = nx.from_numpy_matrix(M)
         self.M, self.clusters = self.networkx_mcl(
@@ -18238,7 +18239,7 @@ class MarkvCluster(object):
     def networkx_mcl(
         self, G, expand_factor=2, inflate_factor=2, max_loop=10, mult_factor=1
     ):
-        import networkx as nx
+        # import networkx as nx
 
         A = nx.adjacency_matrix(G)
         return self.mcl(
