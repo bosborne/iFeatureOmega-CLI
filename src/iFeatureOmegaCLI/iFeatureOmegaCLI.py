@@ -38,12 +38,9 @@ from sklearn.neighbors import KernelDensity
 import scipy.cluster.hierarchy as sch
 from sklearn.decomposition import PCA, LatentDirichletAllocation
 from sklearn.manifold import TSNE
-<<<<<<< HEAD
-#from rdkit import Chem
-=======
 
-# from rdkit import Chem
->>>>>>> b53ac7403bc28f338462e8c4901e15d091fc74a4
+#from rdkit import Chem
+
 import matplotlib as mpl
 
 mpl.use("Agg")
@@ -53,11 +50,7 @@ pPath = os.path.split(os.path.realpath(__file__))[0]
 sys.path.append(pPath)
 sys.path.append(os.path.join(pPath, "chem"))
 
-<<<<<<< HEAD
 #from chem import *
-=======
-# from chem import *
->>>>>>> b53ac7403bc28f338462e8c4901e15d091fc74a4
 
 plt.style.use("ggplot")
 warnings.filterwarnings("ignore", category=FutureWarning, module="sklearn")
